@@ -27,7 +27,7 @@ public class Cli {
         String dolt = context.getApplicationInfo().nativeLibraryDir + "/libdolt.so";
         String homeDir = context.getApplicationInfo().dataDir + "/files";
 
-        String output = null;
+        StringBuilder output = null;
         try {
             String[] command = new String[arguments.length+1];
             command[0] = dolt;
@@ -62,11 +62,14 @@ public class Cli {
             InputStream inputStream = process.getInputStream();
 
             while(process.isAlive()) {
+                // The reason we use null is a trick I learned from Python in order
+                // to easily tell if any output was sent or not.
                 if(output == null) {
-                    output = readInputStream(inputStream).toString();
+                    // Replace Null With First String
+                    output = readInputStream(inputStream);
                 } else {
-                    // I'll rewrite this later, I know concatenating Strings is terrible for performance!!!
-                    output += readInputStream(inputStream).toString();
+                    // Append Onto Existing String
+                    output.append(readInputStream(inputStream));
                 }
             }
 
@@ -77,7 +80,7 @@ public class Cli {
             Log.e(tagName, "Exception: " + e.getLocalizedMessage());
         }
 
-        return output;
+        return output.toString();
     }
 
     public String readRows(Context context) {

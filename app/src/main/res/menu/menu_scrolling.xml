@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.alexisevelyn.dolthub.ScrollingActivity">
     <item
-        android:id="@+id/action_test"
-        android:title="Test Binary" />
+        android:id="@+id/action_version_test"
+        android:title="Retrieve Dolt Version" />
+    <item
+        android:id="@+id/action_clone_repo_test"
+        android:title="Clone Test Repo" />
+    <item
+        android:id="@+id/action_read_rows_test"
+        android:title="Read Test Repo" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -18,26 +18,24 @@ public class Cli {
 
     public static String tagName = "DoltHubDebug";
 
-//    static {
-//        try {
-//            System.loadLibrary("dolt");
-//        } catch(Exception e) {
-//            Log.e(tagName, "Could not Load Dolt Cli!!!");
-//            Log.e(tagName, "Exception: " + e);
-//        }
-//    }
+    public String executeDolt(Context context, String... arguments) {
+        return executeDolt(context, null, arguments);
+    }
 
-    public String getVersion(Context context) {
+    // The String... is VarArgs
+    public String executeDolt(Context context, File cwd, String... arguments) {
         String dolt = context.getApplicationInfo().nativeLibraryDir + "/libdolt.so";
         String homeDir = context.getApplicationInfo().dataDir + "/files";
 
         String output = null;
         try {
-            File file = context.getFileStreamPath("dolt-arm64");
-            Log.d(tagName, "Can Execute: " + file.canExecute());
+            String[] command = new String[arguments.length+1];
+            command[0] = dolt;
 
+            // I've been spoiled by Python lists :P
+            System.arraycopy(arguments, 0, command, 1, arguments.length);
 
-            ProcessBuilder ps = new ProcessBuilder(dolt, "version");
+            ProcessBuilder ps = new ProcessBuilder(command);
 
             // Retrieve Environment Variables And Set Home
             Map<String, String> env = ps.environment();
@@ -45,7 +43,16 @@ public class Cli {
             env.put("HOME", homeDir);
 
             // Set Current Working Directory
-            ps.directory(new File(homeDir));
+            File home;
+            if(cwd == null) {
+                home = new File(homeDir);
+            } else {
+                home = new File(homeDir, cwd.getPath());
+                Log.e(tagName, home.getAbsolutePath());
+            }
+
+            home.mkdirs();
+            ps.directory(home);
 
             // Disable to hide errors from Dolt CLI
             // ps.redirectErrorStream(true);
@@ -53,7 +60,15 @@ public class Cli {
             Process process = ps.start();
 
             InputStream inputStream = process.getInputStream();
-            output = readInputStream(inputStream);
+
+            while(process.isAlive()) {
+                if(output == null) {
+                    output = readInputStream(inputStream).toString();
+                } else {
+                    // I'll rewrite this later, I know concatenating Strings is terrible for performance!!!
+                    output += readInputStream(inputStream).toString();
+                }
+            }
 
             process.waitFor();
         } catch (IOException|InterruptedException e) {
@@ -62,11 +77,31 @@ public class Cli {
             Log.e(tagName, "Exception: " + e.getLocalizedMessage());
         }
 
-        Log.i(tagName, "Version: `" + output + "`");
         return output;
     }
 
-    public String readInputStream(InputStream inputStream) throws IOException {
+    public String readRows(Context context) {
+        String query = "select * from detect_environment;";
+
+        String repo_folder = "experiments";
+        String results = executeDolt(context, new File(repo_folder), "sql", "-q", query, "-r", "json");
+
+        // JSONParser jsonParser = new JSONParser();
+        Log.d(tagName, "Read Rows Output: " + results);
+        return results;
+    }
+
+    public void cloneRepo(Context context) {
+        String repo = "archived_projects/experiments";
+        String output = executeDolt(context, "clone", repo);
+        Log.d(tagName, "Clone Output: " + output);
+    }
+
+    public String getVersion(Context context) {
+        return executeDolt(context, "version");
+    }
+
+    public StringBuilder readInputStream(InputStream inputStream) throws IOException {
         StringBuilder builder = new StringBuilder();
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -75,7 +110,7 @@ public class Cli {
             builder.append(line);
         }
 
-        in.close();
-        return builder.toString();
+//        in.close();
+        return builder;
     }
 }

@@ -33,12 +33,6 @@ public class ScrollingActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-//        Cli cli = new Cli();
-//        if(!cli.isBinaryInstalled(getApplicationContext())) {
-//            Log.d(Cli.tagName, "Installing Dolt CLI");
-//            cli.setupPackagedBinary(getApplicationContext());
-//        }
     }
 
     @Override
@@ -58,12 +52,30 @@ public class ScrollingActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_test) {
+        } else if (id == R.id.action_version_test) {
             Cli cli = new Cli();
             String version = cli.getVersion(getApplicationContext());
             View view = getWindow().getDecorView().findViewById(android.R.id.content);
 
             Snackbar.make(view, version, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+            return true;
+        } else if (id == R.id.action_clone_repo_test) {
+            Cli cli = new Cli();
+            cli.cloneRepo(getApplicationContext());
+            View view = getWindow().getDecorView().findViewById(android.R.id.content);
+
+//            Snackbar.make(view, version, Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
+
+            return true;
+        } else if (id == R.id.action_read_rows_test) {
+            Cli cli = new Cli();
+            String rows = cli.readRows(getApplicationContext());
+            View view = getWindow().getDecorView().findViewById(android.R.id.content);
+
+            Snackbar.make(view, rows, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
             return true;

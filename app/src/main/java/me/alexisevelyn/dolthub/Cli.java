@@ -80,7 +80,8 @@ public class Cli {
             Log.e(tagName, "Exception: " + e.getLocalizedMessage());
         }
 
-        return output.toString();
+        // This is a ternary operator
+        return (output == null) ? null : output.toString();
     }
 
     public String readRows(Context context) {

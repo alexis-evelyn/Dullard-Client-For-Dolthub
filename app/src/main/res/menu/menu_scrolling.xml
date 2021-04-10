@@ -4,13 +4,13 @@
     tools:context="me.alexisevelyn.dolthub.ScrollingActivity">
     <item
         android:id="@+id/action_version_test"
-        android:title="Retrieve Dolt Version" />
+        android:title="@string/retrieve_dolt_version" />
     <item
         android:id="@+id/action_clone_repo_test"
-        android:title="Clone Test Repo" />
+        android:title="@string/clone_test_repo" />
     <item
         android:id="@+id/action_read_rows_test"
-        android:title="Read Test Repo" />
+        android:title="@string/read_test_repo" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

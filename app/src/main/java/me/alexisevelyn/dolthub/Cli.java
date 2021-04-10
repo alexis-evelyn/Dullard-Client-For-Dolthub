@@ -16,7 +16,7 @@ public class Cli {
     // Expected Version - 0.24.3
     // Version Command `dolt version`
 
-    public static String tagName = "DoltHubDebug";
+    private static String tagName = "DoltCli";
 
     public String executeDolt(Context context, String... arguments) {
         return executeDolt(context, null, arguments);
@@ -66,10 +66,10 @@ public class Cli {
                 // to easily tell if any output was sent or not.
                 if(output == null) {
                     // Replace Null With First String
-                    output = readInputStream(inputStream);
+                    output = HelperMethods.readInputStream(inputStream);
                 } else {
                     // Append Onto Existing String
-                    output.append(readInputStream(inputStream));
+                    output.append(HelperMethods.readInputStream(inputStream));
                 }
             }
 
@@ -103,18 +103,5 @@ public class Cli {
 
     public String getVersion(Context context) {
         return executeDolt(context, "version");
-    }
-
-    public StringBuilder readInputStream(InputStream inputStream) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line;
-        while ((line = in.readLine()) != null) {
-            builder.append(line);
-        }
-
-//        in.close();
-        return builder;
     }
 }

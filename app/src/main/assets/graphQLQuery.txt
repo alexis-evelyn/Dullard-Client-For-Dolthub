@@ -1,0 +1,74 @@
+query RepoListForDiscover($query: String, $pageToken: String, $sortByStars: Boolean) {
+            discoverRepos(query: $query, pageToken: $pageToken, sortByStars: $sortByStars) {
+                ...RepoListRepos
+                __typename
+            }
+        }
+                
+        fragment RepoListRepos on RepoList {
+            nextPageToken
+            list {
+                ...RepoListRepo
+                    ...RepoStarsRepo
+                        __typename
+                }
+            __typename
+        }
+                        
+        fragment RepoListRepo on Repo {
+            _id
+            repoName
+            ownerName
+            description
+            displayName
+            slug
+            timestamp
+            visibility
+            role
+            size
+            forkCount
+            networkDetails {
+                parentRepoName
+                parentOwnerName
+                __typename
+            }
+            bounties {
+                ...RepoBountyListRepo
+                __typename
+            }
+            __typename
+        }
+                                                            
+        fragment RepoBountyListRepo on BountyList {
+            list {
+                ...RepoBountyListBounty
+                __typename
+            }
+            nextPageToken
+            __typename
+        }
+    
+        fragment RepoBountyListBounty on Bounty {
+          _id
+          ownerName
+          repoName
+          bountyId
+          title
+          award
+          startTime
+          endTime
+          bountyType
+          details
+          acceptanceCriteria
+          state
+          __typename
+        }
+    
+        fragment RepoStarsRepo on Repo {
+          _id
+          repoName
+          ownerName
+          starredByCaller
+          starCount
+          __typename
+        }

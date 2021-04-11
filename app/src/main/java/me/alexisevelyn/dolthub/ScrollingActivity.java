@@ -47,33 +47,25 @@ public class ScrollingActivity extends AppCompatActivity {
         // a background thread and UI activity in the main thread.
         // The main thread is otherwise known as the UI Thread.
 
+        // API Handler - Handles Cached and Live API Responses
+        Api api = new Api(getApplicationContext());
+
+        // Retrieve Cached Repos If Any
+        // We do this on the main thread as the cached data is pulled from the same partition as the app
+        //   and instead of waiting 220+ ms for the AtomicReference to propagate threads, we just assume that the
+        //   cached data will pull as fast as the app can (which for most phones is far faster than the 220+ ms of propagation waiting).
+        JSONArray cached = api.retrieveCachedRepos();
+        populateRepos(cached);
+
+        // For Thread Safe Propagating Variables Across Threads
         AtomicReference<JSONArray> repos = new AtomicReference<>();
 
         Runnable updateUI = () -> {
-//            Log.e(tagName, "Atomic Cached Repos: " + repos.get());
             populateRepos(repos.get());
         };
 
         Runnable reposRunnable = () -> {
-            Api api = new Api(getApplicationContext());
-
-            // First Update UI With Cached Repos
-            JSONArray cached = api.retrieveCachedRepos();
-//            Log.e(tagName, "Cached Repos: " + cached);
-
-            repos.set(cached); // TODO: Why Is This Sometimes Null? - Answer: Cause AtomicReference Update Propagation is Slow!
-//            Log.e(tagName, "Cached Repos Post Atomic: " + repos.get());
-
-            try {
-                // Fastest I've Got is 220 Milliseconds
-                TimeUnit.MILLISECONDS.sleep(250);
-            } catch (InterruptedException e) {
-                Log.e(tagName, "Sleeping while waiting for AtomicReference to update was Interrupted!!!");
-            }
-
-            runOnUiThread(updateUI);
-
-            // Then Attempt Live Update
+            // Attempt Live Update
             repos.compareAndSet(repos.get(), retrieveRepos(api));
             runOnUiThread(updateUI);
         };

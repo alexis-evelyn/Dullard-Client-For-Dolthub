@@ -3,13 +3,20 @@ package me.alexisevelyn.dolthub;
 import android.content.Context;
 import android.os.NetworkOnMainThreadException;
 import android.os.StrictMode;
+import android.util.JsonReader;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -22,7 +29,43 @@ public class Api {
     private String token = null;
     private JSONArray repos = null;
 
-    public JSONArray listRepos(Context context) {
+    // Cache Repos
+    private Context context;
+    private File cachedRepos;
+
+    public Api(Context context) {
+        this.context = context;
+        this.cachedRepos = new File(context.getCacheDir(), "repos.json");
+
+        readRepos();
+    }
+
+    private void readRepos() {
+        if(cachedRepos.exists()) {
+            try {
+                String reposString = HelperMethods.readTextFile(cachedRepos).toString();
+                repos = new JSONArray(reposString);
+            } catch (JSONException | IOException e) {
+                Log.e(tagName, "Exception Reading Cached Repos!!! Exception: " + e.getLocalizedMessage());
+            }
+        }
+    }
+
+    private void saveRepos() {
+        try {
+            HelperMethods.writeTextFile(this.cachedRepos, this.repos.toString());
+        } catch (FileNotFoundException e) {
+            Log.e(tagName, "How does this cached repos file not exist after we check it? Exception: " + e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.e(tagName, "Cached Repos IOException: " + e.getLocalizedMessage());
+        }
+    }
+
+    public JSONArray retrieveCachedRepos() {
+        return this.repos;
+    }
+
+    public JSONArray listRepos() {
         // TODO: Remove This!!! This allows Networking On Main Thread!!!
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
@@ -76,7 +119,7 @@ public class Api {
                         JSONObject tempRepo = tempArray.getJSONObject(i);
 
                         Boolean notInExistingArray = true;
-                        for(int x = 0; i < repos.length(); x++) {
+                        for(int x = 0; x < repos.length(); x++) {
                             // TODO: Change to use Repo ID!!!
                             if(tempRepo.equals(repos.getJSONObject(x))) {
                                 notInExistingArray = false;
@@ -90,12 +133,15 @@ public class Api {
                 }
 
 //                Log.d(tagName, "Next Page Token: " + token);
+                saveRepos();
                 return repos;
             } else {
                 Log.d(tagName, "GraphQL Status Code (Retrieving Repo List): " + responseCode);
             }
-        } catch (IOException | NetworkOnMainThreadException | JSONException e) {
-            Log.e(tagName, "IOException: " + e);
+        } catch (IOException | NetworkOnMainThreadException e) {
+            Log.e(tagName, "List Repos IOException: " + e);
+        } catch (JSONException e) {
+            Log.e(tagName, "List Repos JSONException: " + e);
         }
 
         return null;

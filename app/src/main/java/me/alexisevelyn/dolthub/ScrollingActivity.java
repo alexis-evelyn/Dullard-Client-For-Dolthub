@@ -58,9 +58,14 @@ public class ScrollingActivity extends AppCompatActivity {
         };
 
         Runnable reposRunnable = () -> {
-            repos.set(retrieveRepos());
+            Api api = new Api(getApplicationContext());
 
-            // Why one cannot just simply pass a variable is beyond me, but at least the Atomic Reference works
+            // First Update UI With Cached Repos
+            repos.set(api.retrieveCachedRepos());
+            runOnUiThread(updateUI);
+
+            // Then Attempt Live Update
+            repos.set(retrieveRepos(api));
             runOnUiThread(updateUI);
         };
 
@@ -68,9 +73,8 @@ public class ScrollingActivity extends AppCompatActivity {
         reposThread.start();
     }
 
-    private JSONArray retrieveRepos() {
-        Api api = new Api();
-        return api.listRepos(getApplicationContext());
+    private JSONArray retrieveRepos(Api api) {
+        return api.listRepos();
     }
 
     private void populateRepos(JSONArray repos) {
@@ -154,8 +158,8 @@ public class ScrollingActivity extends AppCompatActivity {
         Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         Runnable backgroundRunnable = () -> {
-            Cli cli = new Cli();
-            backgroundReturnValue.set(HelperMethods.strip(cli.getVersion(getApplicationContext())));
+            Cli cli = new Cli(getApplicationContext());
+            backgroundReturnValue.set(HelperMethods.strip(cli.getVersion()));
 
             runOnUiThread(updateUI);
         };
@@ -170,8 +174,8 @@ public class ScrollingActivity extends AppCompatActivity {
         Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         Runnable backgroundRunnable = () -> {
-            Cli cli = new Cli();
-            cli.cloneRepo(getApplicationContext());
+            Cli cli = new Cli(getApplicationContext());
+            cli.cloneRepo();
 
             String clonedRepo = getString(R.string.cloned_repo);
             backgroundReturnValue.set(clonedRepo);
@@ -189,8 +193,8 @@ public class ScrollingActivity extends AppCompatActivity {
         Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         Runnable backgroundRunnable = () -> {
-            Cli cli = new Cli();
-            backgroundReturnValue.set(HelperMethods.strip(cli.readRows(getApplicationContext())));
+            Cli cli = new Cli(getApplicationContext());
+            backgroundReturnValue.set(HelperMethods.strip(cli.readRows()));
 
             runOnUiThread(updateUI);
         };

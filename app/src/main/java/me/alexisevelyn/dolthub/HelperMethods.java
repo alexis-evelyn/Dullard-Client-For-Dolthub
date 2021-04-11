@@ -2,7 +2,16 @@ package me.alexisevelyn.dolthub;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +28,28 @@ public class HelperMethods {
 
 //        in.close();
         return builder;
+    }
+
+    public static StringBuilder readTextFile(File file) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line + "\n");
+        }
+
+        reader.close();
+        return builder;
+    }
+
+    public static void writeTextFile(File file, String string) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+        bufferedOutputStream.write(string.getBytes());
+        bufferedOutputStream.close();
+        fileOutputStream.close();
     }
 
     public static String strip(String original) {

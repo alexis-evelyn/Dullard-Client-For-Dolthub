@@ -17,13 +17,18 @@ public class Cli {
     // Version Command `dolt version`
 
     private static String tagName = "DoltCli";
+    private Context context = null;
 
-    public String executeDolt(Context context, String... arguments) {
-        return executeDolt(context, null, arguments);
+    public Cli(Context context) {
+        this.context = context;
+    }
+
+    public String executeDolt(String... arguments) {
+        return executeDolt(null, arguments);
     }
 
     // The String... is VarArgs
-    public String executeDolt(Context context, File cwd, String... arguments) {
+    public String executeDolt(File cwd, String... arguments) {
         String dolt = context.getApplicationInfo().nativeLibraryDir + "/libdolt.so";
         String homeDir = context.getApplicationInfo().dataDir + "/files";
 
@@ -48,7 +53,7 @@ public class Cli {
                 home = new File(homeDir);
             } else {
                 home = new File(homeDir, cwd.getPath());
-                Log.e(tagName, home.getAbsolutePath());
+                Log.d(tagName, "Home Directory: " + home.getAbsolutePath());
             }
 
             home.mkdirs();
@@ -84,24 +89,24 @@ public class Cli {
         return (output == null) ? null : output.toString();
     }
 
-    public String readRows(Context context) {
+    public String readRows() {
         String query = "select * from detect_environment;";
 
         String repo_folder = "experiments";
-        String results = executeDolt(context, new File(repo_folder), "sql", "-q", query, "-r", "json");
+        String results = executeDolt(new File("repos", repo_folder), "sql", "-q", query, "-r", "json");
 
         // JSONParser jsonParser = new JSONParser();
         Log.d(tagName, "Read Rows Output: " + results);
         return results;
     }
 
-    public void cloneRepo(Context context) {
+    public void cloneRepo() {
         String repo = "archived_projects/experiments";
-        String output = executeDolt(context, "clone", repo);
+        String output = executeDolt(new File("repos"), "clone", repo);
         Log.d(tagName, "Clone Output: " + output);
     }
 
-    public String getVersion(Context context) {
-        return executeDolt(context, "version");
+    public String getVersion() {
+        return executeDolt("version");
     }
 }

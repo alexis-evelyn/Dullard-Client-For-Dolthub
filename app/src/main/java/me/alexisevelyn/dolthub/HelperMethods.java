@@ -145,6 +145,10 @@ public class HelperMethods {
     }
 
     public static JSONArray sortReposBySize(JSONArray repos) {
+        return sortReposBySize(repos, false);
+    }
+
+    public static JSONArray sortReposBySize(JSONArray repos, boolean reversed) {
         ArrayList<JSONObject> list = getRepoListForSort(repos);
 
         Collections.sort(list, (Comparator<JSONObject>) (a, b) -> {
@@ -158,7 +162,7 @@ public class HelperMethods {
                 Log.e(tagName, "JSONException While Sorting! Exception: " + e.getLocalizedMessage());
             }
 
-            return Long.compare(a_size, b_size);
+            return reversed ? Long.compare(a_size, b_size) * -1 : Long.compare(a_size, b_size);
         });
 
         return convertListBackToJSONArray(list);

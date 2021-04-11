@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScrollingActivity extends AppCompatActivity {
@@ -29,19 +30,14 @@ public class ScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
         toolBarLayout.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         retrieveAndPopulateRepos();
     }
@@ -54,6 +50,7 @@ public class ScrollingActivity extends AppCompatActivity {
         AtomicReference<JSONArray> repos = new AtomicReference<>();
 
         Runnable updateUI = () -> {
+//            Log.e(tagName, "Atomic Cached Repos: " + repos.get());
             populateRepos(repos.get());
         };
 
@@ -61,11 +58,23 @@ public class ScrollingActivity extends AppCompatActivity {
             Api api = new Api(getApplicationContext());
 
             // First Update UI With Cached Repos
-            repos.set(api.retrieveCachedRepos());
+            JSONArray cached = api.retrieveCachedRepos();
+//            Log.e(tagName, "Cached Repos: " + cached);
+
+            repos.set(cached); // TODO: Why Is This Sometimes Null? - Answer: Cause AtomicReference Update Propagation is Slow!
+//            Log.e(tagName, "Cached Repos Post Atomic: " + repos.get());
+
+            try {
+                // Fastest I've Got is 220 Milliseconds
+                TimeUnit.MILLISECONDS.sleep(250);
+            } catch (InterruptedException e) {
+                Log.e(tagName, "Sleeping while waiting for AtomicReference to update was Interrupted!!!");
+            }
+
             runOnUiThread(updateUI);
 
             // Then Attempt Live Update
-            repos.set(retrieveRepos(api));
+            repos.compareAndSet(repos.get(), retrieveRepos(api));
             runOnUiThread(updateUI);
         };
 

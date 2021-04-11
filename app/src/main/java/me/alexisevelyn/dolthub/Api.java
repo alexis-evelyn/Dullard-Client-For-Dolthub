@@ -44,7 +44,7 @@ public class Api {
         if(cachedRepos.exists()) {
             try {
                 String reposString = HelperMethods.readTextFile(cachedRepos).toString();
-                repos = new JSONArray(reposString);
+                this.repos = new JSONArray(reposString);
             } catch (JSONException | IOException e) {
                 Log.e(tagName, "Exception Reading Cached Repos!!! Exception: " + e.getLocalizedMessage());
             }

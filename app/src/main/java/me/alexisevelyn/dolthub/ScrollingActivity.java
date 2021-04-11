@@ -124,39 +124,78 @@ public class ScrollingActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        View view = getWindow().getDecorView().findViewById(android.R.id.content);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_version_test) {
-            Cli cli = new Cli();
-            String version = cli.getVersion(getApplicationContext());
-            View view = getWindow().getDecorView().findViewById(android.R.id.content);
-
-            Snackbar.make(view, version, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            getVersion(view);
 
             return true;
         } else if (id == R.id.action_clone_repo_test) {
-            Cli cli = new Cli();
-            cli.cloneRepo(getApplicationContext());
-            View view = getWindow().getDecorView().findViewById(android.R.id.content);
-
-//            Snackbar.make(view, version, Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
+            cloneRepo(view);
 
             return true;
         } else if (id == R.id.action_read_rows_test) {
-            Cli cli = new Cli();
-            String rows = cli.readRows(getApplicationContext());
-            View view = getWindow().getDecorView().findViewById(android.R.id.content);
-
-            Snackbar.make(view, rows, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            readRows(view);
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // You would think there would be a generic function to pass a ui thread and a background thread and have the background thread callback the ui thread for us.
+    // TODO: Create that generic class!!!
+    private void getVersion(View view) {
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+        Runnable backgroundRunnable = () -> {
+            Cli cli = new Cli();
+            backgroundReturnValue.set(HelperMethods.strip(cli.getVersion(getApplicationContext())));
+
+            runOnUiThread(updateUI);
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.start();
+    }
+
+    private void cloneRepo(View view) {
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+        Runnable backgroundRunnable = () -> {
+            Cli cli = new Cli();
+            cli.cloneRepo(getApplicationContext());
+
+            String clonedRepo = getString(R.string.cloned_repo);
+            backgroundReturnValue.set(clonedRepo);
+
+            runOnUiThread(updateUI);
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.start();
+    }
+
+    private void readRows(View view) {
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+        Runnable backgroundRunnable = () -> {
+            Cli cli = new Cli();
+            backgroundReturnValue.set(HelperMethods.strip(cli.readRows(getApplicationContext())));
+
+            runOnUiThread(updateUI);
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.start();
     }
 }

@@ -6,6 +6,8 @@
     <string name="read_test_repo">Read Test Repo</string>
     <string name="waiting_for_repo_list">Waiting For List Of Repos</string>
 
+    <string name="no_description">No Description</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

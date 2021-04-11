@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/repos">
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/waiting_for_repo_list" />

@@ -20,11 +20,12 @@ public class Api {
 
     // TODO: Determine If Token Has Expiration Date!!!
     private String token = null;
+    private JSONArray repos = null;
 
     public JSONArray listRepos(Context context) {
         // TODO: Remove This!!! This allows Networking On Main Thread!!!
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
         try {
             String query = getQuery(context);
@@ -63,10 +64,32 @@ public class Api {
                 JSONObject results = new JSONObject(response);
 
                 token = results.getJSONObject("data").getJSONObject("discoverRepos").getString("nextPageToken");
-                JSONArray repos = results.getJSONObject("data").getJSONObject("discoverRepos").getJSONArray("list");
 
-                Log.d(tagName, "Next Page Token: " + token);
+                if(repos == null) {
+                    // New List - Never Opened App Before (Or Data Cleared)
+                    repos = results.getJSONObject("data").getJSONObject("discoverRepos").getJSONArray("list");
+                } else {
+                    // Existing List - Append New Entries
+                    // TODO: Consider Some Max Size Of Array (Maybe 50 Repos For Example) - Then Delete Oldest Entries Whenever Adding New Entry
+                    JSONArray tempArray = results.getJSONObject("data").getJSONObject("discoverRepos").getJSONArray("list");
+                    for(int i = 0; i < tempArray.length(); i++) {
+                        JSONObject tempRepo = tempArray.getJSONObject(i);
 
+                        Boolean notInExistingArray = true;
+                        for(int x = 0; i < repos.length(); x++) {
+                            // TODO: Change to use Repo ID!!!
+                            if(tempRepo.equals(repos.getJSONObject(x))) {
+                                notInExistingArray = false;
+                                break;
+                            }
+                        }
+
+                        if(notInExistingArray)
+                            repos.put(tempRepo);
+                    }
+                }
+
+//                Log.d(tagName, "Next Page Token: " + token);
                 return repos;
             } else {
                 Log.d(tagName, "GraphQL Status Code (Retrieving Repo List): " + responseCode);

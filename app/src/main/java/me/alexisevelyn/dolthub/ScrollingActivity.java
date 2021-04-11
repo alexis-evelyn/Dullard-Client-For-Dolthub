@@ -1,6 +1,5 @@
 package me.alexisevelyn.dolthub;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -16,11 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ScrollingActivity extends AppCompatActivity {
     private static String tagName = "DoltScrolling";
@@ -43,12 +43,39 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
 
-        populateRepos();
+        retrieveAndPopulateRepos();
     }
 
-    private void populateRepos() {
+    private void retrieveAndPopulateRepos() {
+        // For those interested, I have to do network activity in
+        // a background thread and UI activity in the main thread.
+        // The main thread is otherwise known as the UI Thread.
+
+        AtomicReference<JSONArray> repos = new AtomicReference<>();
+
+        Runnable updateUI = () -> {
+            populateRepos(repos.get());
+        };
+
+        Runnable reposRunnable = () -> {
+            repos.set(retrieveRepos());
+
+            // Why one cannot just simply pass a variable is beyond me, but at least the Atomic Reference works
+            runOnUiThread(updateUI);
+        };
+
+        Thread reposThread = new Thread(reposRunnable);
+        reposThread.start();
+    }
+
+    private JSONArray retrieveRepos() {
         Api api = new Api();
-        JSONArray repos = api.listRepos(getApplicationContext());
+        return api.listRepos(getApplicationContext());
+    }
+
+    private void populateRepos(JSONArray repos) {
+        if(repos == null)
+            return;
 
         // For Populating
         LinearLayout repoView = findViewById(R.id.repos);
@@ -66,6 +93,8 @@ public class ScrollingActivity extends AppCompatActivity {
                 String description = repo.get("description").toString();
                 int forks = (int) repo.get("forkCount");
                 int stars = (int) repo.get("starCount");
+
+                description = !HelperMethods.strip(description).equals("") ? HelperMethods.strip(description) : getString(R.string.no_description);
 
                 String display = String.format("%s/%s - %s", ownerName, repoName, description);
 

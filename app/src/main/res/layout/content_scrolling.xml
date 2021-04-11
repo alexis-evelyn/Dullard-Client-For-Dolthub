@@ -15,6 +15,7 @@
         android:id="@+id/repos">
 
         <Button
+            android:id="@+id/placeholder_repo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/waiting_for_repo_list" />

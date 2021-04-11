@@ -70,6 +70,9 @@ public class Api {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
 
+        // Turn on to add all seen repos to cache instead of just the current page
+        boolean displayAllRepos = false;
+
         try {
             String query = getQuery(context);
 
@@ -108,7 +111,7 @@ public class Api {
 
                 token = results.getJSONObject("data").getJSONObject("discoverRepos").getString("nextPageToken");
 
-                if(repos == null) {
+                if(repos == null || !displayAllRepos) {
                     // New List - Never Opened App Before (Or Data Cleared)
                     repos = results.getJSONObject("data").getJSONObject("discoverRepos").getJSONArray("list");
                 } else {

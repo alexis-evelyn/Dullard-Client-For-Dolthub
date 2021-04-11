@@ -1,0 +1,3 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="repo_id_tag" type="id"/>
+</resources>

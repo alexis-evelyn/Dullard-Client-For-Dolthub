@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ScrollingActivity extends AppCompatActivity {
     private static String tagName = "DoltScrolling";
 
+    // For Reusing Same API Object
+    private Api api = null;
+
+    // The Private GraphQL API Often Repeats Repos We've Already Seen, So Sometimes We Have To Request More Data
+    private int currentTries = 0;
+    private int maxTries = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +44,28 @@ public class ScrollingActivity extends AppCompatActivity {
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
         toolBarLayout.setTitle(getTitle());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        // Set Up Scrolling Listener
+        NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.repos_scroll_view);
+        nestedScrollView.setOnScrollChangeListener(this::onScrollChanged);
+
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show());
+
+        // API Handler - Handles Cached and Live API Responses
+        this.api = new Api(getApplicationContext());
 
         retrieveAndPopulateRepos();
     }
 
     private void retrieveAndPopulateRepos() {
+        retrieveAndPopulateRepos(false);
+    }
+
+    private void retrieveAndPopulateRepos(boolean tryAgain) {
         // For those interested, I have to do network activity in
         // a background thread and UI activity in the main thread.
         // The main thread is otherwise known as the UI Thread.
-
-        // API Handler - Handles Cached and Live API Responses
-        Api api = new Api(getApplicationContext());
 
         // Retrieve Cached Repos If Any
         // We do this on the main thread as the cached data is pulled from the same partition as the app
@@ -62,7 +78,7 @@ public class ScrollingActivity extends AppCompatActivity {
         AtomicReference<JSONArray> repos = new AtomicReference<>();
 
         Runnable updateUI = () -> {
-            populateRepos(repos.get());
+            populateRepos(repos.get(), tryAgain);
         };
 
         Runnable reposRunnable = () -> {
@@ -80,52 +96,100 @@ public class ScrollingActivity extends AppCompatActivity {
     }
 
     private void populateRepos(JSONArray repos) {
+        populateRepos(repos, false);
+    }
+
+    private void populateRepos(JSONArray repos, boolean tryAgain) {
         if(repos == null)
             return;
 
         // TODO: Determine How User Wants Repos Sorted
-        repos = HelperMethods.sortReposBySize(repos);
+        // This sorting only works when clearing all previous views from screen and storing all of them in cache
+//        repos = HelperMethods.sortReposBySize(repos);
 
         // For Populating
         LinearLayout repoView = findViewById(R.id.repos);
-        repoView.removeAllViews(); // Clear Existing Views
+//        repoView.removeAllViews(); // Clear Existing Views
+
+        // Remove Placeholder View Once We Have Data To Populate With
+        if(repoView.findViewById(R.id.placeholder_repo) != null)
+            repoView.removeView(repoView.findViewById(R.id.placeholder_repo));
+
+        // The Private GraphQL API Often Repeats Repos We've Already Seen, So Sometimes We Have To Request More Data
+        boolean hasAddedMoreData = false;
 
         // See https://stackoverflow.com/a/46261385/6828099 as to why a For Each Loop Doesn't Work
         int totalRepos = repos.length();
         for(int i = 0; i < totalRepos; i++) {
+            boolean foundExistingEntry = false;
+
             try {
                 JSONObject repo = (JSONObject) repos.get(i);
-                // Log.d(tagName, repo.toString());
+                String id = repo.getString("_id");
 
-                String repoName = repo.get("repoName").toString();
-                String ownerName = repo.get("ownerName").toString();
-                String description = repo.get("description").toString();
+                // This prevents showing the same repos repeatedly
+                for(int c = 0; c < repoView.getChildCount(); c++) {
+                    String tempID = (String) repoView.getChildAt(c).getTag(R.id.repo_id_tag);
+                    if(tempID != null && tempID.equals(id)) {
+//                        Log.e(tagName, "PREBREAK Found Existing Entry!!! Entry: " + tempID);
+                        foundExistingEntry = true;
+                        break;
+                    }
+                }
+
+                if(foundExistingEntry) {
+//                    Log.e(tagName, "Found Existing Entry!!! ID: " + i + " Entry: " + id);
+                    continue;
+                }
+
+                hasAddedMoreData = true;
+
+                String repoName = repo.getString("repoName");
+                String ownerName = repo.getString("ownerName");
+
+                String description = repo.getString("description");
                 int forks = (int) repo.get("forkCount");
                 int stars = (int) repo.get("starCount");
 
                 description = !HelperMethods.strip(description).equals("") ? HelperMethods.strip(description) : getString(R.string.no_description);
 
                 String repoSize = "N/A";
+                String rawRepoSize = repo.getString("size");
                 try {
-                    String rawRepoSize = repo.getString("size");
                     repoSize = HelperMethods.humanReadableByteCountSI(Long.parseLong(rawRepoSize));
                 } catch (NumberFormatException e) {
-                    String rawRepoSize = repo.getString("size");
                     Log.e(tagName, String.format("Repo: %s/%s contains an invalid size `%s`!!!", ownerName, repoName, rawRepoSize));
                 }
 
                 String display = String.format("%s/%s - %s - Size %s", ownerName, repoName, description, repoSize);
 
                 Button repoItem = new Button(getApplicationContext());
+                repoItem.setTag(R.id.repo_id_tag, id);
                 repoItem.setText(display);
 //                repoItem.setTextColor(Color.RED);
 
                 repoView.addView(repoItem);
 
-                Log.d(tagName, display);
+//                Log.d(tagName, display);
             } catch (JSONException e) {
                 Log.e(tagName, "Failed To Read Repo Numbered: " + i);
             }
+        }
+
+        // Allow User To Manually Try Again
+        if(tryAgain) {
+            currentTries = 0;
+        }
+
+        if(!hasAddedMoreData && (currentTries < maxTries)) {
+            Log.e(tagName, "NOT MORE DATA - Current Tries: " + currentTries);
+
+            currentTries += 1;
+            retrieveAndPopulateRepos();
+        } else if (!hasAddedMoreData && (currentTries >= maxTries)) {
+            Log.w(tagName, "Ran Out Of Tries For Loading New Data!!!");
+        } else if (hasAddedMoreData) {
+            Log.d(tagName, "Added More Data!!! Current Try: " + currentTries);
         }
     }
 
@@ -215,5 +279,36 @@ public class ScrollingActivity extends AppCompatActivity {
 
         Thread backgroundThread = new Thread(backgroundRunnable);
         backgroundThread.start();
+    }
+
+    // Modified From: https://stackoverflow.com/a/47507856/6828099
+    public void onScrollChanged(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        double updatePercent = 0.6;
+
+//        if (scrollY > oldScrollY) {
+//            Log.d(tagName, "Scrolled Down");
+//        }
+//        if (scrollY < oldScrollY) {
+//            Log.d(tagName, "Scrolled Up");
+//        }
+//
+//        if (scrollY == 0) {
+//            Log.d(tagName, "Scrolled To Top");
+//        }
+
+        double maximumHeight = v.getChildAt(0).getMeasuredHeight(); // Total Height
+        double measuredHeight = v.getMeasuredHeight(); // The height within the constraints of the parent view
+
+//        Log.e(tagName, "L: " + maximumHeight);
+//        Log.e(tagName, "M: " + measuredHeight);
+        if ((scrollY >= (maximumHeight - measuredHeight)*updatePercent) && scrollY > oldScrollY) {
+//            Log.d(tagName, "Scrolled To 80+% Down");
+            retrieveAndPopulateRepos(true);
+        }
+
+//        if (scrollY == (maximumHeight - measuredHeight)) {
+//            Log.d(tagName, "Scrolled To Bottom");
+//            retrieveAndPopulateRepos(true);
+//        }
     }
 }

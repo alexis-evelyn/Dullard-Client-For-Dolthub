@@ -1,5 +1,6 @@
 package me.alexisevelyn.dolthub;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -82,6 +83,9 @@ public class ScrollingActivity extends AppCompatActivity {
         if(repos == null)
             return;
 
+        // TODO: Determine How User Wants Repos Sorted
+        repos = HelperMethods.sortReposBySize(repos);
+
         // For Populating
         LinearLayout repoView = findViewById(R.id.repos);
         repoView.removeAllViews(); // Clear Existing Views
@@ -101,7 +105,16 @@ public class ScrollingActivity extends AppCompatActivity {
 
                 description = !HelperMethods.strip(description).equals("") ? HelperMethods.strip(description) : getString(R.string.no_description);
 
-                String display = String.format("%s/%s - %s", ownerName, repoName, description);
+                String repoSize = "N/A";
+                try {
+                    String rawRepoSize = repo.getString("size");
+                    repoSize = HelperMethods.humanReadableByteCountSI(Long.parseLong(rawRepoSize));
+                } catch (NumberFormatException e) {
+                    String rawRepoSize = repo.getString("size");
+                    Log.e(tagName, String.format("Repo: %s/%s contains an invalid size `%s`!!!", ownerName, repoName, rawRepoSize));
+                }
+
+                String display = String.format("%s/%s - %s - Size %s", ownerName, repoName, description, repoSize);
 
                 Button repoItem = new Button(getApplicationContext());
                 repoItem.setText(display);

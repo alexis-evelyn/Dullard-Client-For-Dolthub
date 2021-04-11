@@ -44,4 +44,5 @@ dependencies {
 
     // Custom Added Libraries
     // implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+//    implementation 'com.github.mfornos:humanize-slim:1.2.2' // Apache 2.0 - Not Able To Handle 6531090047 bytes for some reason
 }

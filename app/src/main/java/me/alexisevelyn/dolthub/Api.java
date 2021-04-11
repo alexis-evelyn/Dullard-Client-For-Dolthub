@@ -120,8 +120,8 @@ public class Api {
 
                         Boolean notInExistingArray = true;
                         for(int x = 0; x < repos.length(); x++) {
-                            // TODO: Change to use Repo ID!!!
-                            if(tempRepo.equals(repos.getJSONObject(x))) {
+                            // TODO: Check to see if metadata has been updated!!!
+                            if(tempRepo.get("_id").equals(repos.getJSONObject(x).get("_id"))) {
                                 notInExistingArray = false;
                                 break;
                             }

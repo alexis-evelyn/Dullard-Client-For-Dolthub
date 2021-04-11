@@ -15,8 +15,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class HelperMethods {
+    private static String tagName = "DoltHelpers";
+
     public static StringBuilder readInputStream(InputStream inputStream) throws IOException {
         StringBuilder builder = new StringBuilder();
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
@@ -84,5 +91,76 @@ public class HelperMethods {
         }
 
         return original.replaceAll("\\s$", "");
+    }
+
+    // Stolen From: https://stackoverflow.com/a/3758880/6828099
+    public static String humanReadableByteCountSI(long bytes) {
+        if (-1000 < bytes && bytes < 1000) {
+            return bytes + " B";
+        }
+        CharacterIterator ci = new StringCharacterIterator("kMGTPE");
+        while (bytes <= -999_950 || bytes >= 999_950) {
+            bytes /= 1000;
+            ci.next();
+        }
+        return String.format("%.1f %cB", bytes / 1000.0, ci.current());
+    }
+
+    // Stolen From: https://stackoverflow.com/a/3758880/6828099
+    public static String humanReadableByteCountBin(long bytes) {
+        long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
+        if (absB < 1024) {
+            return bytes + " B";
+        }
+        long value = absB;
+        CharacterIterator ci = new StringCharacterIterator("KMGTPE");
+        for (int i = 40; i >= 0 && absB > 0xfffccccccccccccL >> i; i -= 10) {
+            value >>= 10;
+            ci.next();
+        }
+        value *= Long.signum(bytes);
+        return String.format("%.1f %ciB", value / 1024.0, ci.current());
+    }
+
+    private static ArrayList<JSONObject> getRepoListForSort(JSONArray repos) {
+        ArrayList<JSONObject> list = new ArrayList<>();
+        for(int i = 0; i < repos.length(); i++) {
+            try {
+                list.add(repos.getJSONObject(i));
+            } catch (JSONException e) {
+                Log.e(tagName, "JSONException While Preparing For Sorting! Exception: " + e.getLocalizedMessage());
+            }
+        }
+
+        return list;
+    }
+
+    private static JSONArray convertListBackToJSONArray(ArrayList<JSONObject> list) {
+        JSONArray repos = new JSONArray();
+        for(int i = 0; i < list.size(); i++) {
+            repos.put(list.get(i));
+        }
+
+        return repos;
+    }
+
+    public static JSONArray sortReposBySize(JSONArray repos) {
+        ArrayList<JSONObject> list = getRepoListForSort(repos);
+
+        Collections.sort(list, (Comparator<JSONObject>) (a, b) -> {
+            long a_size = 0L;
+            long b_size = 0L;
+
+            try {
+                a_size = Long.parseLong((String) a.get("size"));
+                b_size = Long.parseLong((String) b.get("size"));
+            } catch (JSONException e) {
+                Log.e(tagName, "JSONException While Sorting! Exception: " + e.getLocalizedMessage());
+            }
+
+            return Long.compare(a_size, b_size);
+        });
+
+        return convertListBackToJSONArray(list);
     }
 }

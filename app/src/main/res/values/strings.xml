@@ -10,6 +10,13 @@
     <string name="cloned_repo">Cloned Repo</string>
 
     <string name="error_loading_repo_description">Error Loading Repo Description!</string>
+    <string name="null_repo_description">Unable to retrieve repo details, most likely due to connection issues!</string>
+
+    <string name="invalid_repo_specified_title">Invalid Repo!</string>
+    <string name="invalid_repo_specified_description">Invalid Repo Specified!</string>
+
+    <string name="filter_view_dolthub_https_deep_link">Preview Dolthub Repo</string>
+    <string name="filter_view_dolthub_dolt_deep_link">Preview Dolthub Repo</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

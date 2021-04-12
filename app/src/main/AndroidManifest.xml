@@ -12,7 +12,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UnofficialDolthubClient">
-        <activity android:name=".RepoDetails"></activity>
+        <activity android:name=".RepoDetails">
+            <!-- Allows for links from the website urls to the Dolthub Repo -->
+            <intent-filter android:label="@string/filter_view_dolthub_https_deep_link">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts URIs that begin with "https://www.dolthub.com/repositories" -->
+                <data android:scheme="https"
+                    android:host="www.dolthub.com"
+                    android:pathPrefix="/repositories" />
+
+                <!-- Accepts URIs that begin with "http://www.dolthub.com/repositories" -->
+                <!-- Note, we'll be using https anyway, this just captures a link without https -->
+                <data android:scheme="http"
+                    android:host="www.dolthub.com"
+                    android:pathPrefix="/repositories" />
+
+                <!-- Accepts URIs that begin with "http(s)://dolthub.com/repositories" -->
+                <!-- As noted by https://developer.android.com/training/app-links/deep-linking,
+                   - this combined with the above links should also capture the http version too -->
+                <data android:scheme="https"
+                    android:host="dolthub.com"
+                    android:pathPrefix="/repositories" />
+            </intent-filter>
+
+            <!-- Allows for links that don't specify the full URL of the Dolthub Repo
+               - Useful to prevent URL changes breaking links in other apps if they use this type of link -->
+            <intent-filter android:label="@string/filter_view_dolthub_dolt_deep_link">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts URIs that begin with "dolthub://repo" -->
+                <data android:scheme="dolthub"
+                    android:host="repo" />
+
+                <!-- Accepts URIs that begin with "dolt://repo" -->
+                <data android:scheme="dolt"
+                    android:host="repo" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".DiscoverRepos"
             android:label="@string/app_name"

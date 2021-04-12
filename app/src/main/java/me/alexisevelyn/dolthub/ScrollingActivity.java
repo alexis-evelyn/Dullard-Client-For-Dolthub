@@ -1,6 +1,7 @@
 package me.alexisevelyn.dolthub;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -34,6 +35,8 @@ public class ScrollingActivity extends AppCompatActivity {
     // The Private GraphQL API Often Repeats Repos We've Already Seen, So Sometimes We Have To Request More Data
     private int currentTries = 0;
     private int maxTries = 3;
+    private int repeatedRanOutOfTriesMessage = 0; // Stop's The App From Being Chatty
+    private int maxRepeatedRanOutOfTriesMessage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class ScrollingActivity extends AppCompatActivity {
         toolBarLayout.setTitle(getTitle());
 
         // Set Up Scrolling Listener
-        NestedScrollView nestedScrollView = (NestedScrollView) findViewById(R.id.repos_scroll_view);
+        NestedScrollView nestedScrollView = findViewById(R.id.repos_scroll_view);
         nestedScrollView.setOnScrollChangeListener(this::onScrollChanged);
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -125,7 +128,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
             try {
                 JSONObject repo = (JSONObject) repos.get(i);
-                String id = repo.getString("_id");
+                String repoName = repo.getString("repoName");
+                String ownerName = repo.getString("ownerName");
+                String id = String.format("%s/%s", ownerName, repoName);
 
                 // This prevents showing the same repos repeatedly
                 for(int c = 0; c < repoView.getChildCount(); c++) {
@@ -143,9 +148,6 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
 
                 hasAddedMoreData = true;
-
-                String repoName = repo.getString("repoName");
-                String ownerName = repo.getString("ownerName");
 
                 String description = repo.getString("description");
                 int forks = (int) repo.get("forkCount");
@@ -168,6 +170,8 @@ public class ScrollingActivity extends AppCompatActivity {
                 repoItem.setText(display);
 //                repoItem.setTextColor(Color.RED);
 
+                repoItem.setOnClickListener(this::onRepoClickEvent);
+
                 repoView.addView(repoItem);
 
 //                Log.d(tagName, display);
@@ -181,14 +185,20 @@ public class ScrollingActivity extends AppCompatActivity {
             currentTries = 0;
         }
 
+        // TODO: Get rid of this mess as soon as a public api for listing repos is released
         if(!hasAddedMoreData && (currentTries < maxTries)) {
+            repeatedRanOutOfTriesMessage = 0;
             Log.e(tagName, "NOT MORE DATA - Current Tries: " + currentTries);
 
             currentTries += 1;
             retrieveAndPopulateRepos();
         } else if (!hasAddedMoreData && (currentTries >= maxTries)) {
-            Log.w(tagName, "Ran Out Of Tries For Loading New Data!!!");
+            if (repeatedRanOutOfTriesMessage < maxRepeatedRanOutOfTriesMessage) {
+                repeatedRanOutOfTriesMessage += 1;
+                Log.w(tagName, "Ran Out Of Tries For Loading New Data!!!");
+            }
         } else if (hasAddedMoreData) {
+            repeatedRanOutOfTriesMessage = 0;
             Log.d(tagName, "Added More Data!!! Current Try: " + currentTries);
         }
     }
@@ -310,5 +320,22 @@ public class ScrollingActivity extends AppCompatActivity {
 //            Log.d(tagName, "Scrolled To Bottom");
 //            retrieveAndPopulateRepos(true);
 //        }
+    }
+
+    // Allow Opening More Detailed Page About Repo
+    public void onRepoClickEvent(View view) {
+        String repoId = (String) view.getTag(R.id.repo_id_tag);
+        Log.e(tagName, "Clicked: " + repoId);
+
+        View.OnClickListener openRepoAction = v -> {
+            Uri webpage = Uri.parse("http://dolthub.com/repositories/" + repoId);
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, webpage);
+            startActivity(myIntent);
+        };
+
+        // Temporary PlaceHolder
+        Snackbar.make(view, (String) "Open " + repoId + " In Browser? This is a placeholder action!!!", Snackbar.LENGTH_LONG)
+                .setAction("Open", openRepoAction)
+                .show();
     }
 }

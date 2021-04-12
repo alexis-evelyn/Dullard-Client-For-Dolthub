@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.alexisevelyn.dolthub.ScrollingActivity">
+    tools:context="me.alexisevelyn.dolthub.DiscoverRepos">
     <item
         android:id="@+id/action_version_test"
         android:title="@string/retrieve_dolt_version" />

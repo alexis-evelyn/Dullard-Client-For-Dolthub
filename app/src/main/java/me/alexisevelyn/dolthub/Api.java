@@ -2,21 +2,15 @@ package me.alexisevelyn.dolthub;
 
 import android.content.Context;
 import android.os.NetworkOnMainThreadException;
-import android.os.StrictMode;
-import android.util.JsonReader;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -74,34 +68,8 @@ public class Api {
         boolean displayAllRepos = false;
 
         try {
-            String query = getQuery(context);
-
-            // Create Post Parameters
-            JSONObject parameters = new JSONObject();
-            parameters.put("operationName", "RepoListForDiscover");
-            parameters.put("query", query);
-
-            // Add In Variables To Post Parameters If Any
-            JSONObject variables = new JSONObject();
-            if(token != null)
-                variables.put("pageToken", token);
-            parameters.put("variables", variables);
-
-            URL url = new URL("https://www.dolthub.com/graphql");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("User-Agent", "Dolthub-App/0.1");
-            connection.setRequestProperty("Accept", "*/*");
-            connection.setRequestProperty("Content-Type", "application/json");
-//            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
-
-            // Send Post Request Data
-            connection.setDoOutput(true);
-            try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-                wr.writeBytes(parameters.toString());
-                wr.flush();
-            }
+            JSONObject parameters = getListReposParameters();
+            HttpURLConnection connection = getAPIConnection(parameters);
 
             int responseCode = connection.getResponseCode();
 
@@ -139,7 +107,7 @@ public class Api {
                 saveRepos();
                 return repos;
             } else {
-                Log.d(tagName, "GraphQL Status Code (Retrieving Repo List): " + responseCode);
+                Log.e(tagName, "GraphQL Status Code (Retrieving Repo List): " + responseCode);
             }
         } catch (IOException | NetworkOnMainThreadException e) {
             Log.e(tagName, "List Repos IOException: " + e);
@@ -150,8 +118,90 @@ public class Api {
         return null;
     }
 
-    private String getQuery(Context context) throws IOException {
-        InputStream assetsStream = context.getAssets().open("graphQLQuery.txt");
-        return HelperMethods.readInputStream(assetsStream).toString();
+    private HttpURLConnection getAPIConnection(JSONObject parameters) throws IOException {
+        URL url = new URL("https://www.dolthub.com/graphql");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("User-Agent", "Dolthub-App/0.1");
+        connection.setRequestProperty("Accept", "*/*");
+        connection.setRequestProperty("Content-Type", "application/json");
+//            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+
+        // Send Post Request Data
+        connection.setDoOutput(true);
+        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+            wr.writeBytes(parameters.toString());
+            wr.flush();
+        }
+
+        return connection;
+    }
+
+    public JSONObject getRepoDescription(String repoID) {
+        String[] repoIDParts = repoID.split("/");
+        String ownerName = repoIDParts[0];
+        String repoName = repoIDParts[1];
+
+        return getRepoDescription(ownerName, repoName);
+    }
+
+    public JSONObject getRepoDescription(String ownerName, String repoName) {
+        try {
+            JSONObject parameters = getRepoDescriptionParameters(ownerName, repoName);
+            HttpURLConnection connection = getAPIConnection(parameters);
+
+            int responseCode = connection.getResponseCode();
+
+            if(responseCode == 200) {
+                String response = HelperMethods.readInputStream(connection.getInputStream()).toString();
+                JSONObject results = new JSONObject(response);
+
+                return results.getJSONObject("data").getJSONObject("repo");
+            } else {
+                Log.e(tagName, "GraphQL Status Code (Retrieving Repo Description): " + responseCode);
+            }
+        } catch (IOException | JSONException e) {
+            Log.e(tagName, "Exception Getting Repo Description! Excaption: " + e.getLocalizedMessage());
+        }
+
+        return null;
+    }
+
+    private JSONObject getRepoDescriptionParameters(String ownerName, String repoName) throws IOException, JSONException {
+        InputStream assetsStream = context.getAssets().open("graphQLRepoDescriptionQuery.txt");
+        String query = HelperMethods.readInputStream(assetsStream).toString();
+
+        // Create Post Parameters
+        JSONObject parameters = new JSONObject();
+        parameters.put("operationName", "RepoForAboutQuery");
+        parameters.put("query", query);
+
+        // Add In Variables To Post Parameters If Any
+        JSONObject variables = new JSONObject();
+        variables.put("ownerName", ownerName);
+        variables.put("repoName", repoName);
+
+        parameters.put("variables", variables);
+
+        return parameters;
+    }
+
+    private JSONObject getListReposParameters() throws IOException, JSONException {
+        InputStream assetsStream = context.getAssets().open("graphQLListReposQuery.txt");
+        String query = HelperMethods.readInputStream(assetsStream).toString();
+
+        // Create Post Parameters
+        JSONObject parameters = new JSONObject();
+        parameters.put("operationName", "RepoListForDiscover");
+        parameters.put("query", query);
+
+        // Add In Variables To Post Parameters If Any
+        JSONObject variables = new JSONObject();
+        if(token != null)
+            variables.put("pageToken", token);
+        parameters.put("variables", variables);
+
+        return parameters;
     }
 }

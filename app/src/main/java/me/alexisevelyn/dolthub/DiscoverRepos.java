@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class DiscoverRepos extends AppCompatActivity {
     private static String tagName = "DoltScrolling";
 
     // For Reusing Same API Object
@@ -325,17 +325,10 @@ public class ScrollingActivity extends AppCompatActivity {
     // Allow Opening More Detailed Page About Repo
     public void onRepoClickEvent(View view) {
         String repoId = (String) view.getTag(R.id.repo_id_tag);
-        Log.e(tagName, "Clicked: " + repoId);
+//        Log.d(tagName, "Clicked: " + repoId);
 
-        View.OnClickListener openRepoAction = v -> {
-            Uri webpage = Uri.parse("http://dolthub.com/repositories/" + repoId);
-            Intent myIntent = new Intent(Intent.ACTION_VIEW, webpage);
-            startActivity(myIntent);
-        };
-
-        // Temporary PlaceHolder
-        Snackbar.make(view, (String) "Open " + repoId + " In Browser? This is a placeholder action!!!", Snackbar.LENGTH_LONG)
-                .setAction("Open", openRepoAction)
-                .show();
+        Intent intent = new Intent(this, RepoDetails.class);
+        intent.putExtra("id", repoId);
+        startActivity(intent);
     }
 }

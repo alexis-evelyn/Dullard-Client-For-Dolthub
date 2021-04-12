@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.alexisevelyn.dolthub">
-
     <!-- The internet permission is needed for Dolt CLI to be able to clone repos! -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:extractNativeLibs="true"
         android:allowBackup="true"
+        android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UnofficialDolthubClient">
+        <activity android:name=".RepoDetails"></activity>
         <activity
-            android:name=".ScrollingActivity"
+            android:name=".DiscoverRepos"
             android:label="@string/app_name"
             android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
             <intent-filter>

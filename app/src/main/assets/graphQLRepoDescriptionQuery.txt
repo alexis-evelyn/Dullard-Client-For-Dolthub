@@ -1,0 +1,16 @@
+query RepoForAboutQuery($repoName: String!, $ownerName: String!) {
+    repo(repoName: $repoName, ownerName: $ownerName) {
+        ...RepoForAboutSidebarSection
+        __typename
+    }
+}
+
+fragment RepoForAboutSidebarSection on Repo {
+    _id
+    description
+    size
+    timestamp
+    visibility
+    role
+    __typename
+}

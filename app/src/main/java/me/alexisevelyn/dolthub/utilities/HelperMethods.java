@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub;
+package me.alexisevelyn.dolthub.utilities;
 
 import android.util.Log;
 

@@ -11,11 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/repo_description"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/repoDescription" />
+            android:clickable="true"
+            android:focusable="true"
+            android:checkable="true">
+
+            <TextView
+                android:id="@+id/repo_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/repoDescription" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

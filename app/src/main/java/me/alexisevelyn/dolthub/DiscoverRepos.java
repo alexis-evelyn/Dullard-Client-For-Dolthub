@@ -1,11 +1,9 @@
 package me.alexisevelyn.dolthub;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +21,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import me.alexisevelyn.dolthub.utilities.Api;
+import me.alexisevelyn.dolthub.utilities.Cli;
+import me.alexisevelyn.dolthub.utilities.HelperMethods;
+import me.alexisevelyn.dolthub.views.RepoCard;
 
 public class DiscoverRepos extends AppCompatActivity {
     private static String tagName = "DoltScrolling";
@@ -163,12 +165,12 @@ public class DiscoverRepos extends AppCompatActivity {
                     Log.e(tagName, String.format("Repo: %s/%s contains an invalid size `%s`!!!", ownerName, repoName, rawRepoSize));
                 }
 
-                String display = String.format("%s/%s - %s - Size %s", ownerName, repoName, description, repoSize);
-
-                Button repoItem = new Button(getApplicationContext());
+                RepoCard repoItem = new RepoCard(this);
                 repoItem.setTag(R.id.repo_id_tag, id);
-                repoItem.setText(display);
-//                repoItem.setTextColor(Color.RED);
+                repoItem.setOwner(ownerName);
+                repoItem.setRepo(repoName);
+                repoItem.setDescription(description);
+                repoItem.setSize(repoSize);
 
                 repoItem.setOnClickListener(this::onRepoClickEvent);
 
@@ -325,10 +327,10 @@ public class DiscoverRepos extends AppCompatActivity {
     // Allow Opening More Detailed Page About Repo
     public void onRepoClickEvent(View view) {
         String repoId = (String) view.getTag(R.id.repo_id_tag);
-//        Log.d(tagName, "Clicked: " + repoId);
+        Log.d(tagName, "Clicked: " + repoId);
 
         Intent intent = new Intent(this, RepoDetails.class);
         intent.putExtra("id", repoId);
-        startActivity(intent);
+        this.startActivity(intent);
     }
 }

@@ -18,6 +18,13 @@
     <string name="filter_view_dolthub_https_deep_link">Preview Dolthub Repo</string>
     <string name="filter_view_dolthub_dolt_deep_link">Preview Dolthub Repo</string>
 
+    <string name="default_owner_text">Owner</string>
+    <string name="default_repo_text">Repo</string>
+    <string name="default_description_text">Description</string>
+    <string name="default_size_text">0 B</string>
+
+    <string name="blank" />
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

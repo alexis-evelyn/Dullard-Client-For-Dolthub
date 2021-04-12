@@ -7,16 +7,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
+
+import me.alexisevelyn.dolthub.utilities.Api;
+import me.alexisevelyn.dolthub.utilities.HelperMethods;
 
 public class RepoDetails extends AppCompatActivity {
     private static String tagName = "DoltRepoDetails";
@@ -35,7 +34,8 @@ public class RepoDetails extends AppCompatActivity {
         this.api = new Api(getApplicationContext());
         boolean foundRepoName = getRepoFromIntent();
 
-        if (!foundRepoName) {
+        // Handles If Repo Name Is Null From App Or Intent
+        if (!foundRepoName || this.repoId == null) {
             // Set Title
             if (this.repoId == null || HelperMethods.strip(this.repoId).equals(""))
                 setTitle(getString(R.string.invalid_repo_specified_title));

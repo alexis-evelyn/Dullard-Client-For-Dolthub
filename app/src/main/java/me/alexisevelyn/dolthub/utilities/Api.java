@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub;
+package me.alexisevelyn.dolthub.utilities;
 
 import android.content.Context;
 import android.os.NetworkOnMainThreadException;
@@ -139,6 +139,9 @@ public class Api {
     }
 
     public JSONObject getRepoDescription(String repoID) {
+        if (repoID == null)
+            return null;
+
         String[] repoIDParts = repoID.split("/");
         String ownerName = repoIDParts[0];
         String repoName = repoIDParts[1];

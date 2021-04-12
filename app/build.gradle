@@ -31,7 +31,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    ndkVersion '22.1.7171670'
+//    ndkVersion '22.1.7171670'
 }
 
 dependencies {
@@ -43,8 +43,4 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    // Custom Added Libraries
-    // implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-//    implementation 'com.github.mfornos:humanize-slim:1.2.2' // Apache 2.0 - Not Able To Handle 6531090047 bytes for some reason
 }

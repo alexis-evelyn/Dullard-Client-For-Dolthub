@@ -5,15 +5,28 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.card.MaterialCardView;
 
 import me.alexisevelyn.dolthub.R;
+import me.alexisevelyn.dolthub.utilities.HelperMethods;
 
 public class RepoCard extends MaterialCardView {
     private Context context;
     private String tagName = "RepoCard";
+
+    private String owner = null;
+    private String repo = null;
+    private String description = null;
+    private String size = null;
+
+    private long sizeRaw = 0L;
+    private int stars = 0;
+    private int forks = 0;
+    private long timeStamp = 0L;
 
     public RepoCard(Context context) {
         super(context);
@@ -49,12 +62,13 @@ public class RepoCard extends MaterialCardView {
 
     // This sets the attributes from XML
     private void setAttributeSet(AttributeSet attributeSet) {
-        TypedArray view_set_keys = context.obtainStyledAttributes(attributeSet, R.styleable.RepoCard);
+        TypedArray view_set_keys = context.obtainStyledAttributes(attributeSet, R.styleable.repo_card);
 
-        CharSequence owner_text = view_set_keys.getString(R.styleable.RepoCard_owner_text);
-        CharSequence repo_text = view_set_keys.getString(R.styleable.RepoCard_repo_text);
-        CharSequence description_text = view_set_keys.getString(R.styleable.RepoCard_description_text);
-        CharSequence size_text = view_set_keys.getString(R.styleable.RepoCard_size_text);
+        CharSequence owner_text = view_set_keys.getString(R.styleable.repo_card_owner_text);
+        CharSequence repo_text = view_set_keys.getString(R.styleable.repo_card_repo_text);
+        CharSequence description_text = view_set_keys.getString(R.styleable.repo_card_description_text);
+        CharSequence size = view_set_keys.getString(R.styleable.repo_card_size_long);
+        boolean placeholderCard = view_set_keys.getBoolean(R.styleable.repo_card_placeholder_card, false);
 
         Log.e(tagName, "OWNER TEXT: " + owner_text);
         Log.e(tagName, "DESC TEXT: " + description_text);
@@ -68,8 +82,26 @@ public class RepoCard extends MaterialCardView {
         if (description_text != null)
             this.setDescription(description_text.toString());
 
-        if (size_text != null)
-            this.setSize(size_text.toString());
+        if (size != null)
+            this.setSize(Long.parseLong(size.toString()));
+
+        // TODO: Rewrite Once Actual Card Design Is Made
+        if (placeholderCard) {
+            View ownerView = findViewById(R.id.owner_button);
+            View repoView = findViewById(R.id.repo_button);
+            View sizeView = findViewById(R.id.size_button);
+            View descriptionView = findViewById(R.id.description_button);
+
+            ownerView.setVisibility(GONE);
+            repoView.setVisibility(GONE);
+            sizeView.setVisibility(GONE);
+
+            // Doesn't seem to make a difference, the code works, just the size is the same in this state
+            ViewGroup.LayoutParams descriptionLayoutParams = descriptionView.getLayoutParams();
+            descriptionLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+            descriptionView.setLayoutParams(descriptionLayoutParams);
+        }
 
         view_set_keys.recycle();
     }
@@ -89,9 +121,33 @@ public class RepoCard extends MaterialCardView {
         descriptionButton.setText(description);
     }
 
-    public void setSize(String size) {
+    public void setSize(Long sizeRaw) {
+        this.sizeRaw = sizeRaw;
+        this.size = HelperMethods.humanReadableByteCountSI(this.sizeRaw); // TODO: Allow user to choose units
+
         Button sizeButton = findViewById(R.id.size_button);
         sizeButton.setText(size);
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+
+//        Button sizeButton = findViewById(R.id.size_button);
+//        sizeButton.setText(size);
+    }
+
+    public void setForks(int forks) {
+        this.forks = forks;
+
+//        Button sizeButton = findViewById(R.id.size_button);
+//        sizeButton.setText(size);
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+
+//        Button sizeButton = findViewById(R.id.size_button);
+//        sizeButton.setText(size);
     }
 
     // Yes, I know passing this method to MaterialCardView is cheesing it,

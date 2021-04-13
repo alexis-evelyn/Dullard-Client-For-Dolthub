@@ -36,6 +36,11 @@
                 <data android:scheme="https"
                     android:host="dolthub.com"
                     android:pathPrefix="/repositories" />
+
+                <!-- Accepts URIs that begin with "http(s)://doltremoteapi.dolthub.com/" -->
+                <data android:scheme="https"
+                    android:host="doltremoteapi.dolthub.com"
+                    android:pathPrefix="/" />
             </intent-filter>
 
             <!-- Allows for links that don't specify the full URL of the Dolthub Repo

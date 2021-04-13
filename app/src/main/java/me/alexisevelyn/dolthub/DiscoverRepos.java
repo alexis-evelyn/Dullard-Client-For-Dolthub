@@ -28,6 +28,7 @@ import me.alexisevelyn.dolthub.utilities.Cli;
 import me.alexisevelyn.dolthub.utilities.HelperMethods;
 import me.alexisevelyn.dolthub.views.RepoCard;
 
+// TODO: Detect if connected to internet to decide when to retry loading live
 public class DiscoverRepos extends AppCompatActivity {
     private static String tagName = "DoltScrolling";
 
@@ -152,25 +153,28 @@ public class DiscoverRepos extends AppCompatActivity {
                 hasAddedMoreData = true;
 
                 String description = repo.getString("description");
-                int forks = (int) repo.get("forkCount");
-                int stars = (int) repo.get("starCount");
+                int forks = repo.getInt("forkCount");
+                int stars = repo.getInt("starCount");
+                long timeStamp = repo.getLong("timestamp");
 
                 description = !HelperMethods.strip(description).equals("") ? HelperMethods.strip(description) : getString(R.string.no_description);
-
-                String repoSize = "N/A";
-                String rawRepoSize = repo.getString("size");
-                try {
-                    repoSize = HelperMethods.humanReadableByteCountSI(Long.parseLong(rawRepoSize));
-                } catch (NumberFormatException e) {
-                    Log.e(tagName, String.format("Repo: %s/%s contains an invalid size `%s`!!!", ownerName, repoName, rawRepoSize));
-                }
 
                 RepoCard repoItem = new RepoCard(this);
                 repoItem.setTag(R.id.repo_id_tag, id);
                 repoItem.setOwner(ownerName);
                 repoItem.setRepo(repoName);
                 repoItem.setDescription(description);
-                repoItem.setSize(repoSize);
+
+                repoItem.setStars(stars);
+                repoItem.setForks(forks);
+                repoItem.setTimeStamp(timeStamp);
+
+                try {
+                    // Parse Long Out Of String
+                    repoItem.setSize(Long.parseLong(repo.getString("size")));
+                } catch (NumberFormatException e) {
+                    Log.e(tagName, String.format("Repo: %s/%s contains an invalid size `%s`!!!", ownerName, repoName, repo.getString("size")));
+                }
 
                 repoItem.setOnClickListener(this::onRepoClickEvent);
 

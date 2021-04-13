@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Used to give custom properties to RepoCard View in XML -->
-    <declare-styleable name="RepoCard">
+    <declare-styleable name="repo_card">
         <attr name="owner_text" format="string" />
         <attr name="repo_text" format="string" />
         <attr name="description_text" format="string" />
-        <attr name="size_text" format="string" />
+        <attr name="size_long" format="string" />
+        <attr name="placeholder_card" format="boolean" />
     </declare-styleable>
 </resources>

@@ -19,10 +19,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/placeholder_repo"
-                app:owner_text="@string/blank"
-                app:repo_text="@string/blank"
-                app:description_text="@string/waiting_for_repo_list"
-                app:size_text="@string/blank"/>
+                app:placeholder_card="true"
+                app:description_text="@string/waiting_for_repo_list" />
 
         </LinearLayout>
 

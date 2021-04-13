@@ -81,6 +81,7 @@ public class RepoDetails extends AppCompatActivity {
 
             // TODO: Implement Means Of Retrieving Pull Request, etc... from URI
             if (data_str.contains("://repo/")) {
+                // Example: dolt://repo/archived_projects/experiments
                 String[] validateRepoURI = data_str.split("://repo/");
 
                 if (validateRepoURI.length < 2)
@@ -99,6 +100,7 @@ public class RepoDetails extends AppCompatActivity {
                 Log.d(tagName, "App Repo ID: " + repoId);
                 return true;
             } else if (data_str.contains("dolthub.com/repositories/")) {
+                // Example: https://www.dolthub.com/repositories/archived_projects/experiments
                 String[] validateRepoURI = data_str.split("dolthub\\.com/repositories/");
 
                 if (validateRepoURI.length < 2)
@@ -116,6 +118,24 @@ public class RepoDetails extends AppCompatActivity {
                 this.repoId = String.format("%s/%s", repoSplit[0], repoSplit[1]);
 
                 Log.d(tagName, "Web Repo ID: " + repoId);
+                return true;
+            } else if (data_str.contains("doltremoteapi.dolthub.com/")) {
+                // Example: https://doltremoteapi.dolthub.com/archived_projects/experiments
+                String[] validateRepoURI = data_str.split("doltremoteapi\\.dolthub\\.com/");
+
+                if (validateRepoURI.length < 2)
+                    return false;
+
+                this.repoId = HelperMethods.strip(validateRepoURI[1], "/");
+
+                // This URI cannot contain prs and other data
+                if (!this.repoId.contains("/"))
+                    return false;
+
+                String[] repoSplit = this.repoId.split("/");
+                this.repoId = String.format("%s/%s", repoSplit[0], repoSplit[1]);
+
+                Log.d(tagName, "Remote Repo ID: " + repoId);
                 return true;
             }
 

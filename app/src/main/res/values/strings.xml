@@ -8,6 +8,7 @@
 
     <string name="main_sidebar">Main Sidebar</string>
     <string name="clone_repo">Clone Repo</string>
+    <string name="share_repo">Share Repo</string>
     <string name="go_back">Go Back</string>
 
     <string name="no_description">No Description</string>

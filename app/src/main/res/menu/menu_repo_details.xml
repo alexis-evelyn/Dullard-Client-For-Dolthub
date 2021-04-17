@@ -4,6 +4,12 @@
     tools:context="me.alexisevelyn.dolthub.activities.DiscoverRepos">
 
     <item
+        android:id="@+id/action_share_repo"
+        android:icon="@drawable/share"
+        android:title="@string/share_repo"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_version_test"
         android:title="@string/retrieve_dolt_version"
         app:showAsAction="never" />

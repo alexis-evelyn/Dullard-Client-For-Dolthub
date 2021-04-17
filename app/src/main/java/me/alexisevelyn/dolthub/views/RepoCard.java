@@ -19,6 +19,7 @@ public class RepoCard extends MaterialCardView {
     private Context context;
     private String tagName = "RepoCard";
 
+    // Do I need these?
     private String owner = null;
     private String repo = null;
     private String description = null;
@@ -108,18 +109,24 @@ public class RepoCard extends MaterialCardView {
     }
 
     public void setOwner(String owner) {
+        this.owner = owner;
+
         TextView ownerView = findViewById(R.id.owner_view);
-        ownerView.setText(owner);
+        ownerView.setText(this.owner);
     }
 
     public void setRepo(String repo) {
+        this.repo = repo;
+
         TextView repoView = findViewById(R.id.repo_view);
-        repoView.setText(repo);
+        repoView.setText(this.repo);
     }
 
     public void setDescription(String description) {
+        this.description = description;
+
         TextView descriptionView = findViewById(R.id.description_view);
-        descriptionView.setText(description);
+        descriptionView.setText(this.description);
     }
 
     public void setSize(Long sizeRaw) {
@@ -133,7 +140,7 @@ public class RepoCard extends MaterialCardView {
     public void setStars(int stars) {
         this.stars = stars;
 
-        String starText = String.format(this.context.getString(R.string.star_fork_card_format), stars, this.context.getString(R.string.stars_icon));
+        String starText = String.format(this.context.getString(R.string.star_fork_card_format), this.stars, this.context.getString(R.string.stars_icon));
 
         TextView starView = findViewById(R.id.stars_view);
         starView.setText(starText);
@@ -142,7 +149,7 @@ public class RepoCard extends MaterialCardView {
     public void setForks(int forks) {
         this.forks = forks;
 
-        String forkText = String.format(this.context.getString(R.string.star_fork_card_format), forks, this.context.getString(R.string.forks_icon));
+        String forkText = String.format(this.context.getString(R.string.star_fork_card_format), this.forks, this.context.getString(R.string.forks_icon));
 
         TextView forksView = findViewById(R.id.forks_view);
         forksView.setText(forkText);

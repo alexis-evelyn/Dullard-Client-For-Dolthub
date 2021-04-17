@@ -2,15 +2,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.alexisevelyn.dolthub.DiscoverRepos">
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="Test Share"
+        android:contentDescription="Test Description"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_version_test"
-        android:title="@string/retrieve_dolt_version" />
+        android:title="@string/retrieve_dolt_version"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_clone_repo_test"
-        android:title="@string/clone_test_repo" />
+        android:title="@string/clone_test_repo"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_read_rows_test"
-        android:title="@string/read_test_repo" />
+        android:title="@string/read_test_repo"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

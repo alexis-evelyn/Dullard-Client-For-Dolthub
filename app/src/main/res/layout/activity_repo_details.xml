@@ -2,29 +2,47 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/refresh_repo_details"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RepoDetails">
 
-    <androidx.core.widget.NestedScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.UnofficialDolthubClient.AppBarOverlay">
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:checkable="true">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/Theme.UnofficialDolthubClient.PopupOverlay"
+            android:background="?attr/colorPrimary"
+            app:title="@string/repo_details" />
 
-            <TextView
-                android:id="@+id/repo_description"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/repoDescription" />
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true">
 
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/repo_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repoDescription" />
 
-    </androidx.core.widget.NestedScrollView>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

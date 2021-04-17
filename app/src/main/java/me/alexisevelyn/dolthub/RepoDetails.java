@@ -1,12 +1,15 @@
 package me.alexisevelyn.dolthub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -20,15 +23,19 @@ import me.alexisevelyn.dolthub.utilities.HelperMethods;
 public class RepoDetails extends AppCompatActivity {
     private static String tagName = "DoltRepoDetails";
 
-    Api api;
-    String repoId;
-    JSONObject repoDescription;
-    SwipeRefreshLayout refreshLayout;
+    private Api api;
+    private String repoId;
+    private JSONObject repoDescription;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_details);
+
+        // This Activates The Custom Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // TODO: Add Ability To Parse Repo ID From URL
         this.api = new Api(getApplicationContext());
@@ -37,10 +44,10 @@ public class RepoDetails extends AppCompatActivity {
         // Handles If Repo Name Is Null From App Or Intent
         if (!foundRepoName || this.repoId == null) {
             // Set Title
-            if (this.repoId == null || HelperMethods.strip(this.repoId).equals(""))
-                setTitle(getString(R.string.invalid_repo_specified_title));
-            else {
-                setTitle(HelperMethods.strip(this.repoId));
+            if (this.repoId == null || HelperMethods.strip(this.repoId).equals("")) {
+                toolbar.setSubtitle(getString(R.string.invalid_repo_specified_title));
+            } else {
+                toolbar.setSubtitle(HelperMethods.strip(this.repoId));
             }
 
             // Set Description
@@ -55,7 +62,7 @@ public class RepoDetails extends AppCompatActivity {
             return;
         }
 
-        setTitle(this.repoId);
+        toolbar.setSubtitle(this.repoId);
         loadAndPopulateRepoDescription();
 
         // To allow user to refresh repo details
@@ -63,6 +70,19 @@ public class RepoDetails extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(
                 () -> loadAndPopulateRepoDescription()
         );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_discover_repos, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return true;
     }
 
     private boolean getRepoFromIntent() {
@@ -174,7 +194,9 @@ public class RepoDetails extends AppCompatActivity {
             String size = HelperMethods.humanReadableByteCountSI(Long.parseLong(rawSize));
 
             descriptionView.setText(description);
-            setTitle(String.format("%s - %s", this.repoId, size));
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setSubtitle(String.format("%s - %s", this.repoId, size));
         } catch (JSONException e) {
             Log.e(tagName, "JSONException While Populating Repo Description! Exception: " + e.getLocalizedMessage());
             descriptionView.setText(getString(R.string.error_loading_repo_description));

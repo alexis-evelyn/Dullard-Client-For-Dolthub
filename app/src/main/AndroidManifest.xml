@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.alexisevelyn.dolthub">
+
     <!-- The internet permission is needed for Dolt CLI to be able to clone repos! -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +14,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UnofficialDolthubClient">
-        <activity android:name=".RepoDetails">
+
+        <!-- View Featured Repos From Dolthub's GraphQL API -->
+        <!-- The Current Starting Point For The App -->
+        <activity
+            android:name=".DiscoverRepos"
+            android:label="@string/discover_repos_title"
+            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Details For The Repo - Also The Entry Point For Cloning and Viewing Tables -->
+        <activity
+            android:name=".RepoDetails"
+            android:label="@string/repo_details"
+            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
             <!-- Allows for links from the website urls to the Dolthub Repo -->
             <intent-filter android:label="@string/filter_view_dolthub_https_deep_link">
                 <action android:name="android.intent.action.VIEW" />
@@ -57,16 +77,6 @@
                 <!-- Accepts URIs that begin with "dolt://repo" -->
                 <data android:scheme="dolt"
                     android:host="repo" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".DiscoverRepos"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

@@ -3,7 +3,6 @@ package me.alexisevelyn.dolthub;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import org.json.JSONArray;
@@ -45,15 +43,31 @@ public class DiscoverRepos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+
+        // This Activates The Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(getString(R.string.discover_repos_title)); // Or R.string.discover_repos_title_long
 
         // Set Up Scrolling Listener
         NestedScrollView nestedScrollView = findViewById(R.id.repos_scroll_view);
         nestedScrollView.setOnScrollChangeListener(this::onScrollChanged);
+
+        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, R.string.scrolling_top, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                // This makes instant scroll, no animation
+//                nestedScrollView.scrollTo(0, 0);
+
+                // This is fast scroll, animation
+                nestedScrollView.fullScroll(View.FOCUS_UP);
+
+                // Neither of these scrolls uncollapse the app bar :(
+
+                return true;
+            }
+        });
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -213,7 +227,7 @@ public class DiscoverRepos extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        getMenuInflater().inflate(R.menu.menu_discover_repos, menu);
         return true;
     }
 

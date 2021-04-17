@@ -35,6 +35,9 @@
 
     <string name="blank" />
 
+    <string name="repo_details">Repo Details</string>
+    <string name="scrolling_top">Scrolling to the top</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

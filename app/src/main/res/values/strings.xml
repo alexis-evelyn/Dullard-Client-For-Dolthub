@@ -6,6 +6,10 @@
     <string name="read_test_repo">Read Test Repo</string>
     <string name="waiting_for_repo_list">Waiting For List Of Repos</string>
 
+    <string name="main_sidebar">Main Sidebar</string>
+    <string name="clone_repo">Clone Repo</string>
+    <string name="go_back">Go Back</string>
+
     <string name="no_description">No Description</string>
     <string name="cloned_repo">Cloned Repo</string>
 
@@ -37,6 +41,9 @@
 
     <string name="repo_details">Repo Details</string>
     <string name="scrolling_top">Scrolling to the top</string>
+    <string name="not_implemented">Not Implemented</string>
+    <string name="settings">Settings</string>
+    <string name="legal">Legal</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

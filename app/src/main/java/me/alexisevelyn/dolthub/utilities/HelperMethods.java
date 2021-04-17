@@ -1,6 +1,8 @@
 package me.alexisevelyn.dolthub.utilities;
 
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +11,6 @@ import org.json.JSONObject;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import me.alexisevelyn.dolthub.activities.Settings;
 
 public class HelperMethods {
     private static String tagName = "DoltHelpers";
@@ -166,5 +169,11 @@ public class HelperMethods {
         });
 
         return convertListBackToJSONArray(list);
+    }
+
+    // Open Settings Activity
+    public static void openSettings(View view) {
+        Intent intent = new Intent(view.getContext(), Settings.class);
+        view.getContext().startActivity(intent);
     }
 }

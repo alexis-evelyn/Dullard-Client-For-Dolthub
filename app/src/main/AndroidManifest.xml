@@ -18,7 +18,7 @@
         <!-- View Featured Repos From Dolthub's GraphQL API -->
         <!-- The Current Starting Point For The App -->
         <activity
-            android:name=".DiscoverRepos"
+            android:name=".activities.DiscoverRepos"
             android:label="@string/discover_repos_title"
             android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
             <intent-filter>
@@ -30,7 +30,7 @@
 
         <!-- Details For The Repo - Also The Entry Point For Cloning and Viewing Tables -->
         <activity
-            android:name=".RepoDetails"
+            android:name=".activities.RepoDetails"
             android:label="@string/repo_details"
             android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
             <!-- Allows for links from the website urls to the Dolthub Repo -->
@@ -78,6 +78,20 @@
                 <data android:scheme="dolt"
                     android:host="repo" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.Settings"
+            android:label="@string/settings"
+            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+
+        </activity>
+
+        <activity
+            android:name=".activities.Legal"
+            android:label="@string/legal"
+            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+
         </activity>
     </application>
 

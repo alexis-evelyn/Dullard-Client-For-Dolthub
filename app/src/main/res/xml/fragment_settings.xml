@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="https://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:dialogTitle="Select duration"
+        android:entries="@array/settings_list_preference_titles"
+        android:entryValues="@array/settings_list_preference_values"
+        android:key="list"
+        android:summary="Click to show a list to choose from"
+        android:title="List Preference" />
+
+</androidx.preference.PreferenceScreen>

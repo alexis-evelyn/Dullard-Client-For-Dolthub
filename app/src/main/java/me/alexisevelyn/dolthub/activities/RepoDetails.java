@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub;
+package me.alexisevelyn.dolthub.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import me.alexisevelyn.dolthub.R;
 import me.alexisevelyn.dolthub.utilities.Api;
 import me.alexisevelyn.dolthub.utilities.HelperMethods;
 
@@ -35,7 +37,11 @@ public class RepoDetails extends AppCompatActivity {
 
         // This Activates The Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.round_arrow_back_24); // Set Navigation Icon - Back Arrow
         setSupportActionBar(toolbar);
+
+        // This Has The Navigation Button Go Back To The Last Activity
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         // TODO: Add Ability To Parse Repo ID From URL
         this.api = new Api(getApplicationContext());
@@ -75,12 +81,24 @@ public class RepoDetails extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_discover_repos, menu);
+        getMenuInflater().inflate(R.menu.menu_repo_details, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        View view = getWindow().getDecorView().findViewById(android.R.id.content);
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            HelperMethods.openSettings(view);
+
+            return true;
+        }
 
         return true;
     }

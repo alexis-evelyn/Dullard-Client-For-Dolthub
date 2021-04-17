@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub;
+package me.alexisevelyn.dolthub.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import me.alexisevelyn.dolthub.R;
 import me.alexisevelyn.dolthub.utilities.Api;
 import me.alexisevelyn.dolthub.utilities.Cli;
 import me.alexisevelyn.dolthub.utilities.HelperMethods;
@@ -46,27 +47,30 @@ public class DiscoverRepos extends AppCompatActivity {
 
         // This Activates The Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.round_menu_24); // Set Navigation Icon - Hamburger Menu
         setSupportActionBar(toolbar);
 
-        // Set Up Scrolling Listener
+        // Open Hamburger Menu (Sidebar) - TODO: Implement
+        toolbar.setNavigationOnClickListener(view -> {
+            Snackbar.make(view, R.string.not_implemented, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        });
+
+        // Setup Scrolling Listener
         NestedScrollView nestedScrollView = findViewById(R.id.repos_scroll_view);
         nestedScrollView.setOnScrollChangeListener(this::onScrollChanged);
 
-        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Snackbar.make(view, R.string.scrolling_top, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        toolbar.setOnLongClickListener(view -> {
+            Snackbar.make(view, R.string.scrolling_top, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-                // This makes instant scroll, no animation
+            // This makes instant scroll, no animation
 //                nestedScrollView.scrollTo(0, 0);
 
-                // This is fast scroll, animation
-                nestedScrollView.fullScroll(View.FOCUS_UP);
+            // This is fast scroll, animation
+            nestedScrollView.fullScroll(View.FOCUS_UP);
 
-                // Neither of these scrolls uncollapse the app bar :(
+            // Neither of these scrolls uncollapse the app bar :(
 
-                return true;
-            }
+            return true;
         });
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -241,6 +245,8 @@ public class DiscoverRepos extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            HelperMethods.openSettings(view);
+
             return true;
         } else if (id == R.id.action_version_test) {
             getVersion(view);

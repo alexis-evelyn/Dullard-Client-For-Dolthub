@@ -1,9 +1,7 @@
 package me.alexisevelyn.dolthub.activities;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import me.alexisevelyn.dolthub.R;
 import me.alexisevelyn.dolthub.fragments.SettingsFragment;
 

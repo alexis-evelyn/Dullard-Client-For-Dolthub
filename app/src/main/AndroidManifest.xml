@@ -4,6 +4,8 @@
     package="me.alexisevelyn.dolthub">
 
     <!-- The internet permission is needed for Dolt CLI to be able to clone repos! -->
+    <!-- The network state permission is needed for refreshing the app automatically -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

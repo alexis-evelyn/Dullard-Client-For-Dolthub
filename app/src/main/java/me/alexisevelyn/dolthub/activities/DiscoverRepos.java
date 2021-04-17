@@ -1,6 +1,8 @@
 package me.alexisevelyn.dolthub.activities;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +41,7 @@ public class DiscoverRepos extends AppCompatActivity {
     private int maxTries = 3;
     private int repeatedRanOutOfTriesMessage = 0; // Stop's The App From Being Chatty
     private int maxRepeatedRanOutOfTriesMessage = 1;
+    private boolean registeredNetworkListener = false; // To not register the listener more than once
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,29 @@ public class DiscoverRepos extends AppCompatActivity {
 
         Thread reposThread = new Thread(reposRunnable);
         reposThread.start();
+
+        // We get one free update attempt before we register the network change callback
+        // After that, we wait until the network is available before trying again
+        ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+        connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                // If Network Becomes Available And We Still Have The Placeholder Card, Update
+                LinearLayout repoView = findViewById(R.id.repos);
+                if(repoView.findViewById(R.id.placeholder_repo) != null) {
+                    Thread reposThread = new Thread(reposRunnable);
+                    reposThread.start();
+                }
+            }
+
+            @Override
+            public void onLost(Network network) {
+                // We don't need to do anything when the network is lost right now.
+                // Maybe we can add a message or something to alert the user later.
+            }
+        });
+
+        this.registeredNetworkListener = true;
     }
 
     private JSONArray retrieveRepos(Api api) {
@@ -319,7 +345,7 @@ public class DiscoverRepos extends AppCompatActivity {
     }
 
     // Modified From: https://stackoverflow.com/a/47507856/6828099
-    public void onScrollChanged(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+    private void onScrollChanged(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         double updatePercent = 0.6;
 
 //        if (scrollY > oldScrollY) {
@@ -350,7 +376,7 @@ public class DiscoverRepos extends AppCompatActivity {
     }
 
     // Allow Opening More Detailed Page About Repo
-    public void onRepoClickEvent(View view) {
+    private void onRepoClickEvent(View view) {
         String repoId = (String) view.getTag(R.id.repo_id_tag);
         Log.d(tagName, "Clicked: " + repoId);
 

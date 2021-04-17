@@ -40,6 +40,7 @@
                 android:text="@string/default_owner_text" />
 
             <TextView
+                android:id="@+id/owner_repo_split"
                 android:clickable="false"
                 app:rippleColor="@android:color/transparent"
                 android:layout_width="wrap_content"

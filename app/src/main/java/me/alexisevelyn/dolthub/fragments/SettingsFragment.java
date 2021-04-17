@@ -1,9 +1,7 @@
 package me.alexisevelyn.dolthub.fragments;
 
 import android.os.Bundle;
-
 import androidx.preference.PreferenceFragmentCompat;
-
 import me.alexisevelyn.dolthub.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {

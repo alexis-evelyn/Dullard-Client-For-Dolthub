@@ -92,11 +92,17 @@ public class RepoCard extends MaterialCardView {
             View ownerView = findViewById(R.id.owner_view);
             View repoView = findViewById(R.id.repo_view);
             View sizeView = findViewById(R.id.size_view);
+            View ownerRepoSplit = findViewById(R.id.owner_repo_split);
+            View starsView = findViewById(R.id.stars_view);
+            View forksView = findViewById(R.id.forks_view);
             View descriptionView = findViewById(R.id.description_view);
 
             ownerView.setVisibility(GONE);
             repoView.setVisibility(GONE);
             sizeView.setVisibility(GONE);
+            ownerRepoSplit.setVisibility(GONE);
+            starsView.setVisibility(GONE);
+            forksView.setVisibility(GONE);
 
             // Doesn't seem to make a difference, the code works, just the size is the same in this state
             ViewGroup.LayoutParams descriptionLayoutParams = descriptionView.getLayoutParams();

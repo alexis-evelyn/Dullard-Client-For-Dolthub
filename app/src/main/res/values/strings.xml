@@ -22,6 +22,16 @@
     <string name="default_repo_text">Repo</string>
     <string name="default_description_text">Description</string>
     <string name="default_size_text">0 B</string>
+    <string name="default_stars_text">0 ✪</string>
+    <string name="default_forks_text">0 🍴</string>
+
+    <!-- This will be replaced by Material icons -->
+    <string name="stars_icon">✪</string>
+    <string name="forks_icon">🍴</string>
+    <string name="star_fork_card_format">%d %s</string>
+
+    <string name="discover_repos_title">Discover Repos</string>
+    <string name="discover_repos_title_long">Discover Repositories</string>
 
     <string name="blank" />
 

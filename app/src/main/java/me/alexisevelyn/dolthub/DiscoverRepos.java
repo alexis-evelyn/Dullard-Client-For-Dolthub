@@ -47,8 +47,9 @@ public class DiscoverRepos extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(getTitle());
+        toolBarLayout.setTitle(getString(R.string.discover_repos_title)); // Or R.string.discover_repos_title_long
 
         // Set Up Scrolling Listener
         NestedScrollView nestedScrollView = findViewById(R.id.repos_scroll_view);

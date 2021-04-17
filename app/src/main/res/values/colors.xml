@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Hide Elements -->
+    <color name="transparent">#00000000</color>
+
+    <!-- Primary Color -->
+    <color name="primary">#050043</color>
+    <color name="primary_light">#37286f</color>
+    <color name="primary_dark">#00001f</color>
+    <color name="primary_text">#ffffff</color>
+
+    <!-- TODO: Figure Out Complementary Color For Primary Color -->
+    <color name="secondary">#562a01</color>
+    <color name="secondary_light">#87532b</color>
+    <color name="secondary_dark">#300000</color>
+    <color name="secondary_text">#ffffff</color>
+
+    <!-- TODO: Figure Out Repo Card Colors -->
+    <color name="ripple_color_light">#ffff0000</color>
+    <color name="ripple_color_dark">#ffaa66cc</color>
+    <color name="card_color_light">#ffffffff</color>
+    <color name="card_color_dark">#ff424242</color>
 </resources>
+
+<!-- Colors Picked From: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=050043&secondary.color=562A01&primary.text.color=ffffff
+       and https://purple11.com/complementary-colors/ -->

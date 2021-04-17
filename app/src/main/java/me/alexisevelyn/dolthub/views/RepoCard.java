@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
@@ -87,10 +88,10 @@ public class RepoCard extends MaterialCardView {
 
         // TODO: Rewrite Once Actual Card Design Is Made
         if (placeholderCard) {
-            View ownerView = findViewById(R.id.owner_button);
-            View repoView = findViewById(R.id.repo_button);
-            View sizeView = findViewById(R.id.size_button);
-            View descriptionView = findViewById(R.id.description_button);
+            View ownerView = findViewById(R.id.owner_view);
+            View repoView = findViewById(R.id.repo_view);
+            View sizeView = findViewById(R.id.size_view);
+            View descriptionView = findViewById(R.id.description_view);
 
             ownerView.setVisibility(GONE);
             repoView.setVisibility(GONE);
@@ -107,40 +108,44 @@ public class RepoCard extends MaterialCardView {
     }
 
     public void setOwner(String owner) {
-        Button ownerButton = findViewById(R.id.owner_button);
-        ownerButton.setText(owner);
+        TextView ownerView = findViewById(R.id.owner_view);
+        ownerView.setText(owner);
     }
 
     public void setRepo(String repo) {
-        Button repoButton = findViewById(R.id.repo_button);
-        repoButton.setText(repo);
+        TextView repoView = findViewById(R.id.repo_view);
+        repoView.setText(repo);
     }
 
     public void setDescription(String description) {
-        Button descriptionButton = findViewById(R.id.description_button);
-        descriptionButton.setText(description);
+        TextView descriptionView = findViewById(R.id.description_view);
+        descriptionView.setText(description);
     }
 
     public void setSize(Long sizeRaw) {
         this.sizeRaw = sizeRaw;
         this.size = HelperMethods.humanReadableByteCountSI(this.sizeRaw); // TODO: Allow user to choose units
 
-        Button sizeButton = findViewById(R.id.size_button);
+        TextView sizeButton = findViewById(R.id.size_view);
         sizeButton.setText(size);
     }
 
     public void setStars(int stars) {
         this.stars = stars;
 
-//        Button sizeButton = findViewById(R.id.size_button);
-//        sizeButton.setText(size);
+        String starText = String.format(this.context.getString(R.string.star_fork_card_format), stars, this.context.getString(R.string.stars_icon));
+
+        TextView starView = findViewById(R.id.stars_view);
+        starView.setText(starText);
     }
 
     public void setForks(int forks) {
         this.forks = forks;
 
-//        Button sizeButton = findViewById(R.id.size_button);
-//        sizeButton.setText(size);
+        String forkText = String.format(this.context.getString(R.string.star_fork_card_format), forks, this.context.getString(R.string.forks_icon));
+
+        TextView forksView = findViewById(R.id.forks_view);
+        forksView.setText(forkText);
     }
 
     public void setTimeStamp(long timeStamp) {

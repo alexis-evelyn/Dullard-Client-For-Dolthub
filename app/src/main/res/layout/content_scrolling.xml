@@ -20,8 +20,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/placeholder_repo"
                 app:placeholder_card="true"
-                app:description_text="@string/waiting_for_repo_list" />
+                app:description_text="@string/large_text" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

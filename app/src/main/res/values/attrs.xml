@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme">
+        <attr name="repo_card_ripple_color" format="color" />
+        <attr name="repo_card_background" format="color" />
+    </declare-styleable>
+</resources>

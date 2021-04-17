@@ -1,55 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TODO: Figure out why the margin in the CardView is not transparent!!! -->
+<!-- TODO: Align TextViews To Look Nice -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    app:cardBackgroundColor="@color/cardview_dark_background"
-    app:rippleColor="@android:color/holo_purple"
+    app:cardBackgroundColor="?attr/repo_card_background"
+    app:rippleColor="?attr/repo_card_ripple_color"
     android:id="@+id/repo_card"
+
+    app:cardCornerRadius="15dp"
+    app:cardElevation="0dp"
 
     android:layout_margin="@dimen/card_margin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:checkable="false" >
+    android:checkable="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/owner_button"
-            android:clickable="false"
-            app:rippleColor="@android:color/transparent"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/default_owner_text" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/repo_button"
-            android:clickable="false"
-            app:rippleColor="@android:color/transparent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/default_repo_text" />
+            <TextView
+                android:id="@+id/owner_view"
+                android:clickable="false"
+                app:rippleColor="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_owner_text" />
 
-        <Button
-            android:id="@+id/description_button"
-            android:clickable="false"
-            app:rippleColor="@android:color/transparent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/default_description_text" />
+            <TextView
+                android:clickable="false"
+                app:rippleColor="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/" />
 
-        <Button
-            android:id="@+id/size_button"
+            <TextView
+                android:id="@+id/repo_view"
+                android:clickable="false"
+                app:rippleColor="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_repo_text" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/size_view"
             android:clickable="false"
             app:rippleColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/default_size_text" />
+
+        <TextView
+            android:id="@+id/stars_view"
+            android:clickable="false"
+            app:rippleColor="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_stars_text" />
+
+        <TextView
+            android:id="@+id/forks_view"
+            android:clickable="false"
+            app:rippleColor="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_forks_text" />
+
+        <TextView
+            android:id="@+id/description_view"
+            android:clickable="false"
+            app:rippleColor="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_description_text" />
 
     </LinearLayout>
 

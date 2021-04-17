@@ -37,6 +37,7 @@
                 app:rippleColor="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/textview_text_color"
                 android:text="@string/default_owner_text" />
 
             <TextView
@@ -45,7 +46,8 @@
                 app:rippleColor="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/" />
+                android:textColor="?attr/textview_text_color"
+                android:text="@string/card_repo_owner_separator" />
 
             <TextView
                 android:id="@+id/repo_view"
@@ -53,6 +55,7 @@
                 app:rippleColor="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/textview_text_color"
                 android:text="@string/default_repo_text" />
 
         </LinearLayout>
@@ -63,6 +66,7 @@
             app:rippleColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/textview_text_color"
             android:text="@string/default_size_text" />
 
         <TextView
@@ -71,6 +75,7 @@
             app:rippleColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/textview_text_color"
             android:text="@string/default_stars_text" />
 
         <TextView
@@ -79,6 +84,7 @@
             app:rippleColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/textview_text_color"
             android:text="@string/default_forks_text" />
 
         <TextView
@@ -87,6 +93,7 @@
             app:rippleColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/textview_text_color"
             android:text="@string/default_description_text" />
 
     </LinearLayout>

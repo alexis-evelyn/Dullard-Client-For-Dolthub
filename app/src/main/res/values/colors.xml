@@ -20,6 +20,11 @@
     <color name="ripple_color_dark">#ffaa66cc</color>
     <color name="card_color_light">#ffffffff</color>
     <color name="card_color_dark">#ff424242</color>
+
+    <!-- TODO: Figure Out Repo Description Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="default_textview_light_text_color">#808080</color>
 </resources>
 
 <!-- Colors Picked From: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=050043&secondary.color=562A01&primary.text.color=ffffff

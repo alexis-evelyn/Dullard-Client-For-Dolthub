@@ -136,4 +136,5 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="repoDescription">Loading Repo Description...</string>
+    <string name="card_repo_owner_separator">/</string>
 </resources>

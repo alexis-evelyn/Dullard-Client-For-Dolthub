@@ -23,12 +23,19 @@
         <!-- Ripple Color For Repo Cards -->
         <item name="repo_card_ripple_color">@color/ripple_color_light</item>
         <item name="repo_card_background">@color/card_color_light</item>
+
+        <!-- Text Color For Repo Description - TODO: DEPRECATED -->
+        <item name="textview_text_color">@color/black</item>
     </style>
 
-    <!-- Not Defined In Dark Theme - So Pulled From Here When Dark Mode On -->
+    <!-- Action Bar and Menu Theming -->
+    <!-- https://stackoverflow.com/a/29316237/6828099https://stackoverflow.com/a/29316237/6828099 -->
     <style name="Theme.UnofficialDolthubClient.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <!-- For Dropdown Menu Text -->
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Not Defined In Dark Theme - So Pulled From Here When Dark Mode On -->

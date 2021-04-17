@@ -3,5 +3,6 @@
     <declare-styleable name="Theme">
         <attr name="repo_card_ripple_color" format="color" />
         <attr name="repo_card_background" format="color" />
+        <attr name="textview_text_color" format="color" />
     </declare-styleable>
 </resources>

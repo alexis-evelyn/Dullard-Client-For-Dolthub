@@ -9,7 +9,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        // TODO: Key Cannot Be Null
         setPreferencesFromResource(R.xml.fragment_settings, rootKey);
     }
 }

@@ -17,18 +17,17 @@
         app:layout_collapseMode="pin"
         app:popupTheme="@style/Theme.Dullard.PopupOverlay"
         android:background="?attr/colorPrimary"
-        app:title="@string/repo_details" />
+        app:title="@string/settings" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:name="me.alexisevelyn.dullard.fragments.SettingsFragment"
-            android:id="@+id/settings_preferences"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/settings_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="0" />
 
     </androidx.core.widget.NestedScrollView>
 </com.google.android.material.appbar.AppBarLayout>

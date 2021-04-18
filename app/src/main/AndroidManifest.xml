@@ -92,9 +92,7 @@
         <activity
             android:name="me.alexisevelyn.dullard.activities.Settings"
             android:label="@string/settings"
-            android:theme="@style/Theme.Dullard.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.Dullard.NoActionBar" />
 
         <activity
             android:name="me.alexisevelyn.dullard.activities.Legal"

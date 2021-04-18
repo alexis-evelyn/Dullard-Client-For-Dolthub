@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen
-    xmlns:android="https://schemas.android.com/apk/res/android">
+    xmlns:android="https://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <!--    <androidx.preference.PreferenceCategory android:title="@string/general_preferences_category">-->
 <!--        -->
 <!--    </androidx.preference.PreferenceCategory>-->
 
-    <Preference android:summary="@string/legal_desc"
-        android:title="@string/legal">
+    <PreferenceCategory app:title="@string/general_preferences_category">
+        <Preference android:summary="@string/legal_desc"
+            android:title="@string/legal">
 
-        <intent android:action="android.intent.action.VIEW"
-            android:targetPackage="me.alexisevelyn.dullard"
-            android:targetClass="me.alexisevelyn.dullard.activities.Legal" />
-    </Preference>
+            <!-- Why does this am command work: adb shell am start -W -a android.intent.category.DEFAULT me.alexisevelyn.dullard/me.alexisevelyn.dullard.activities.Legal
+                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
+            <intent android:action="android.intent.category.DEFAULT"
+                android:data="me.alexisevelyn.dullard"
+                android:targetClass="me.alexisevelyn.dullard.activities.Legal" />
+        </Preference>
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

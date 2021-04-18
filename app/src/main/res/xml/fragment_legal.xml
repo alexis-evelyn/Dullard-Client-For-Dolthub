@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen
-    xmlns:android="https://schemas.android.com/apk/res/android">
+    xmlns:android="https://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.SwitchPreference
         android:defaultValue="true"
@@ -8,12 +9,23 @@
         android:summary="Turn this option on or off"
         android:title="Settings option" />
 
-    <ListPreference
-        android:dialogTitle="Select duration"
-        android:entries="@array/settings_list_preference_titles"
-        android:entryValues="@array/settings_list_preference_values"
-        android:key="list"
-        android:summary="Click to show a list to choose from"
-        android:title="List Preference" />
+<!--    <ListPreference-->
+<!--        android:dialogTitle="Select duration"-->
+<!--        android:entries="@array/settings_list_preference_titles"-->
+<!--        android:entryValues="@array/settings_list_preference_values"-->
+<!--        android:key="list"-->
+<!--        android:summary="Click to show a list to choose from"-->
+<!--        android:title="List Preference" />-->
+
+    <PreferenceCategory app:title="@string/general_preferences_category">
+        <Preference android:summary="@string/legal_desc"
+            android:title="@string/legal">
+
+            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://www.example.com
+                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
+            <intent android:action="android.intent.action.VIEW"
+                    android:data="https://www.example.com" />
+        </Preference>
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

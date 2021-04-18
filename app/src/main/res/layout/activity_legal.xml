@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/Theme.UnofficialDolthubClient.AppBarOverlay">
+        android:theme="@style/Theme.Dullard.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
-            app:popupTheme="@style/Theme.UnofficialDolthubClient.PopupOverlay"
+            app:popupTheme="@style/Theme.Dullard.PopupOverlay"
             android:background="?attr/colorPrimary"
             app:title="@string/repo_details" />
 
@@ -29,7 +29,7 @@
             android:layout_height="match_parent">
 
             <fragment
-                android:name="me.alexisevelyn.dolthub.fragments.LegalFragment"
+                android:name="me.alexisevelyn.dullard.fragments.LegalFragment"
                 android:id="@+id/legal_preferences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

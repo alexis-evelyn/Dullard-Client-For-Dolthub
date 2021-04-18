@@ -2,6 +2,12 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="https://schemas.android.com/apk/res/android">
 
+    <androidx.preference.SwitchPreference
+        android:defaultValue="true"
+        android:key="example_switch"
+        android:summary="Turn this option on or off"
+        android:title="Settings option" />
+
     <ListPreference
         android:dialogTitle="Select duration"
         android:entries="@array/settings_list_preference_titles"

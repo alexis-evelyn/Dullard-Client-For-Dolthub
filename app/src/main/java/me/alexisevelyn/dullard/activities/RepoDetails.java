@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.activities;
+package me.alexisevelyn.dullard.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,12 +18,12 @@ import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import me.alexisevelyn.dolthub.R;
-import me.alexisevelyn.dolthub.utilities.Api;
-import me.alexisevelyn.dolthub.utilities.HelperMethods;
+import me.alexisevelyn.dullard.R;
+import me.alexisevelyn.dullard.utilities.Api;
+import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class RepoDetails extends AppCompatActivity {
-    private static String tagName = "DoltRepoDetails";
+    private static String tagName = "DullardRepoDetails";
 
     private Api api;
     private String repoId;
@@ -73,9 +73,7 @@ public class RepoDetails extends AppCompatActivity {
 
         // To allow user to refresh repo details
         this.refreshLayout = findViewById(R.id.refresh_repo_details);
-        refreshLayout.setOnRefreshListener(
-                () -> loadAndPopulateRepoDescription()
-        );
+        refreshLayout.setOnRefreshListener(this::loadAndPopulateRepoDescription);
     }
 
     @Override
@@ -99,11 +97,11 @@ public class RepoDetails extends AppCompatActivity {
 
             return true;
         } else if (id == R.id.action_share_repo) {
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-
             String repoName = this.repoId;
             String repoLink = String.format("https://www.dolthub.com/repositories/%s", this.repoId);
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
 
             // I'm getting rid of the subject for now as the subject isn't
             //   introducing data that can't be inferred from the link itself.

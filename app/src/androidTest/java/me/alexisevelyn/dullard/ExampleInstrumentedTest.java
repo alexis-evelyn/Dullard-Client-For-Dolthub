@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub;
+package me.alexisevelyn.dullard;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("me.alexisevelyn.dolthub", appContext.getPackageName());
+        assertEquals("me.alexisevelyn.dullard", appContext.getPackageName());
     }
 }

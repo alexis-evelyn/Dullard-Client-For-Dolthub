@@ -1,11 +1,11 @@
-package me.alexisevelyn.dolthub.fragments;
+package me.alexisevelyn.dullard.fragments;
 
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
-import me.alexisevelyn.dolthub.R;
+import me.alexisevelyn.dullard.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    private static String tagName = "DoltSettings";
+    private static String tagName = "DullardSettings";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

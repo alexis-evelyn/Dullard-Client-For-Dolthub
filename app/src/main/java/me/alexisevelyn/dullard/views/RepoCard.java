@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.views;
+package me.alexisevelyn.dullard.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,13 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
-import me.alexisevelyn.dolthub.R;
-import me.alexisevelyn.dolthub.utilities.HelperMethods;
+import me.alexisevelyn.dullard.R;
+import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class RepoCard extends MaterialCardView {
     private Context context;

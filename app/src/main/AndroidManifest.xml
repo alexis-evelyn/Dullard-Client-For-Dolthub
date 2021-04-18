@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.alexisevelyn.dolthub">
+    package="me.alexisevelyn.dullard">
 
     <!-- The internet permission is needed for Dolt CLI to be able to clone repos! -->
     <!-- The network state permission is needed for refreshing the app automatically -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- The Label Here Determines The App Name (And Also The AppBar Name) -->
+    <!-- We fix the AppBar Name During Runtime -->
     <application
         android:allowBackup="true"
         android:extractNativeLibs="true"
@@ -15,14 +17,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.UnofficialDolthubClient">
+        android:theme="@style/Theme.Dullard">
 
         <!-- View Featured Repos From Dolthub's GraphQL API -->
         <!-- The Current Starting Point For The App -->
+        <!-- The Label Here Determines The Launcher Icon Name -->
         <activity
-            android:name=".activities.DiscoverRepos"
-            android:label="@string/discover_repos_title"
-            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+            android:name="me.alexisevelyn.dullard.activities.DiscoverRepos"
+            android:label="@string/app_name_short"
+            android:theme="@style/Theme.Dullard.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,9 +35,9 @@
 
         <!-- Details For The Repo - Also The Entry Point For Cloning and Viewing Tables -->
         <activity
-            android:name=".activities.RepoDetails"
+            android:name="me.alexisevelyn.dullard.activities.RepoDetails"
             android:label="@string/repo_details"
-            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+            android:theme="@style/Theme.Dullard.NoActionBar">
             <!-- Allows for links from the website urls to the Dolthub Repo -->
             <intent-filter android:label="@string/filter_view_dolthub_https_deep_link">
                 <action android:name="android.intent.action.VIEW" />
@@ -79,21 +82,28 @@
                 <!-- Accepts URIs that begin with "dolt://repo" -->
                 <data android:scheme="dolt"
                     android:host="repo" />
+
+                <!-- Accepts URIs that begin with "dullard://repo" -->
+                <data android:scheme="dullard"
+                    android:host="repo" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activities.Settings"
+            android:name="me.alexisevelyn.dullard.activities.Settings"
             android:label="@string/settings"
-            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+            android:theme="@style/Theme.Dullard.NoActionBar">
 
         </activity>
 
         <activity
-            android:name=".activities.Legal"
+            android:name="me.alexisevelyn.dullard.activities.Legal"
             android:label="@string/legal"
-            android:theme="@style/Theme.UnofficialDolthubClient.NoActionBar">
+            android:theme="@style/Theme.Dullard.NoActionBar">
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Base application theme. -->
-    <style name="Theme.UnofficialDolthubClient" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Dullard" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. The main color for consumers to associate with the app! -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -29,7 +29,7 @@
     </style>
 
     <!-- Action Bar and Menu Theming -->
-    <style name="Theme.UnofficialDolthubClient.NoActionBar">
+    <style name="Theme.Dullard.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 

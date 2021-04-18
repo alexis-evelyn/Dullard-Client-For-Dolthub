@@ -1,13 +1,13 @@
-package me.alexisevelyn.dolthub.fragments;
+package me.alexisevelyn.dullard.fragments;
 
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import me.alexisevelyn.dolthub.R;
+import me.alexisevelyn.dullard.R;
 
 public class LegalFragment extends PreferenceFragmentCompat {
-    private static String tagName = "DoltLegal";
+    private static String tagName = "DullardLegal";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

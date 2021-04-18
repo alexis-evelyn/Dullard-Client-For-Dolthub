@@ -2,12 +2,16 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="https://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        android:dialogTitle="Select duration"
-        android:entries="@array/settings_list_preference_titles"
-        android:entryValues="@array/settings_list_preference_values"
-        android:key="list"
-        android:summary="Click to show a list to choose from"
-        android:title="List Preference" />
+<!--    <androidx.preference.PreferenceCategory android:title="@string/general_preferences_category">-->
+<!--        -->
+<!--    </androidx.preference.PreferenceCategory>-->
+
+    <Preference android:summary="@string/legal_desc"
+        android:title="@string/legal">
+
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="me.alexisevelyn.dullard"
+            android:targetClass="me.alexisevelyn.dullard.activities.Legal" />
+    </Preference>
 
 </androidx.preference.PreferenceScreen>

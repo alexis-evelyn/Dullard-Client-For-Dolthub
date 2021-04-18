@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.utilities;
+package me.alexisevelyn.dullard.utilities;
 
 import android.content.Intent;
 import android.util.Log;
@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import me.alexisevelyn.dolthub.activities.Settings;
+import me.alexisevelyn.dullard.activities.Settings;
 
 public class HelperMethods {
-    private static String tagName = "DoltHelpers";
+    private static String tagName = "DullardHelpers";
 
     public static StringBuilder readInputStream(InputStream inputStream) throws IOException {
         StringBuilder builder = new StringBuilder();

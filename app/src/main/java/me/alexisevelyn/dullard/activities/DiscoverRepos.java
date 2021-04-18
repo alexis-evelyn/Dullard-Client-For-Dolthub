@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.activities;
+package me.alexisevelyn.dullard.activities;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -23,15 +23,15 @@ import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import me.alexisevelyn.dolthub.R;
-import me.alexisevelyn.dolthub.utilities.Api;
-import me.alexisevelyn.dolthub.utilities.Cli;
-import me.alexisevelyn.dolthub.utilities.HelperMethods;
-import me.alexisevelyn.dolthub.views.RepoCard;
+import me.alexisevelyn.dullard.R;
+import me.alexisevelyn.dullard.utilities.Api;
+import me.alexisevelyn.dullard.utilities.Cli;
+import me.alexisevelyn.dullard.utilities.HelperMethods;
+import me.alexisevelyn.dullard.views.RepoCard;
 
 // TODO: Detect if connected to internet to decide when to retry loading live
 public class DiscoverRepos extends AppCompatActivity {
-    private static String tagName = "DoltScrolling";
+    private static String tagName = "DullardScrolling";
 
     // For Reusing Same API Object
     private Api api = null;
@@ -51,6 +51,7 @@ public class DiscoverRepos extends AppCompatActivity {
         // This Activates The Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.round_menu_24); // Set Navigation Icon - Hamburger Menu
+        toolbar.setTitle(R.string.discover_repos_title);
         setSupportActionBar(toolbar);
 
         // Open Hamburger Menu (Sidebar) - TODO: Implement

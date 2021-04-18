@@ -1,17 +1,13 @@
-package me.alexisevelyn.dolthub.activities;
+package me.alexisevelyn.dullard.activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import me.alexisevelyn.dolthub.R;
-import me.alexisevelyn.dolthub.fragments.SettingsFragment;
+import me.alexisevelyn.dullard.R;
 
 public class Legal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_legal);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.settings_preferences,
-                new SettingsFragment()).commit();
     }
 }

@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.utilities;
+package me.alexisevelyn.dullard.utilities;
 
 import android.content.Context;
 import android.os.NetworkOnMainThreadException;
@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Api {
-    private static String tagName = "DoltApi";
+    private static String tagName = "DullardApi";
 
     // TODO: Determine If Token Has Expiration Date!!!
     private String token = null;
@@ -123,7 +123,7 @@ public class Api {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("User-Agent", "Dolthub-App/0.1");
+        connection.setRequestProperty("User-Agent", "Dullard-App/0.1");
         connection.setRequestProperty("Accept", "*/*");
         connection.setRequestProperty("Content-Type", "application/json");
 //            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
@@ -165,7 +165,7 @@ public class Api {
                 Log.e(tagName, "GraphQL Status Code (Retrieving Repo Description): " + responseCode);
             }
         } catch (IOException | JSONException e) {
-            Log.e(tagName, "Exception Getting Repo Description! Excaption: " + e.getLocalizedMessage());
+            Log.e(tagName, "Exception Getting Repo Description! Exception: " + e.getLocalizedMessage());
         }
 
         return null;

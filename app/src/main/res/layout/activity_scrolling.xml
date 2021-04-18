@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/Theme.UnofficialDolthubClient.AppBarOverlay">
+        android:theme="@style/Theme.Dullard.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/discover_repos_toolbar_layout"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/Theme.UnofficialDolthubClient.PopupOverlay" />
+                app:popupTheme="@style/Theme.Dullard.PopupOverlay" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

@@ -1,4 +1,4 @@
-package me.alexisevelyn.dolthub.utilities;
+package me.alexisevelyn.dullard.utilities;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,7 +12,7 @@ public class Cli {
     // Expected Version - 0.24.3
     // Version Command `dolt version`
 
-    private static String tagName = "DoltCli";
+    private static String tagName = "DullardCli";
     private Context context = null;
 
     public Cli(Context context) {

@@ -105,7 +105,9 @@ public class RepoDetails extends AppCompatActivity {
             String repoName = this.repoId;
             String repoLink = String.format("https://www.dolthub.com/repositories/%s", this.repoId);
 
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, repoName);
+            // I'm getting rid of the subject for now as the subject isn't
+            //   introducing data that can't be inferred from the link itself.
+//            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, repoName);
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, repoLink);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_repo_via)));
             return true;

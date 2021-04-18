@@ -135,7 +135,9 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <string name="share_repo_via">Share Dolthub Repo via</string>
     <string name="action_settings">Settings</string>
-    <string name="repoDescription">Loading Repo Description...</string>
+    <string name="repoDescription">Loading Repo Description…</string>
     <string name="card_repo_owner_separator">/</string>
 </resources>

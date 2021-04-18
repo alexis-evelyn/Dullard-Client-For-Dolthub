@@ -98,6 +98,17 @@ public class RepoDetails extends AppCompatActivity {
             HelperMethods.openSettings(view);
 
             return true;
+        } else if (id == R.id.action_share_repo) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+
+            String repoName = this.repoId;
+            String repoLink = String.format("https://www.dolthub.com/repositories/%s", this.repoId);
+
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, repoName);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, repoLink);
+            startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_repo_via)));
+            return true;
         }
 
         return true;

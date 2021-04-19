@@ -183,6 +183,7 @@ public class DiscoverRepos extends AppCompatActivity {
                 String id = String.format("%s/%s", ownerName, repoName);
 
                 // This prevents showing the same repos repeatedly
+                // TODO: Fix this!!!
                 for(int c = 0; c < repoView.getChildCount(); c++) {
                     String tempID = (String) repoView.getChildAt(c).getTag(R.id.repo_id_tag);
                     if(tempID != null && tempID.equals(id)) {

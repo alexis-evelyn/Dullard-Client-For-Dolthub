@@ -16,3 +16,6 @@ local.properties
 
 # JNI Libs
 /app/src/main/jniLibs/
+
+# Profiler Trace Files
+*.trace

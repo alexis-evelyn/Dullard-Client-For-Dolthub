@@ -133,6 +133,9 @@ public class RepoDetails extends AppCompatActivity {
             tablesTest.setText((String) backgroundReturnValue.get());
         };
 
+        // TODO: Fix so this doesn't get halted when the activity is exited by the user.
+        //    That way we don't have corrupt clones from the CLI just being halted
+        //    (and this is supposed to be a background action anyway).
         Runnable backgroundRunnable = () -> {
             Cli cli = new Cli(getApplicationContext());
             cli.cloneRepo(repoName);
@@ -284,12 +287,13 @@ public class RepoDetails extends AppCompatActivity {
         };
 
         Runnable backgroundRunnable = () -> {
-            // Signals that refreshing is finished
-            refreshLayout.setRefreshing(false);
-
             backgroundReturnValue.set(api.getRepoDescription(repoId));
 
-            runOnUiThread(updateUI);
+            // Signals that refreshing is finished
+            if (refreshLayout != null) {
+                refreshLayout.setRefreshing(false);
+                runOnUiThread(updateUI);
+            }
         };
 
         Thread backgroundThread = new Thread(backgroundRunnable);

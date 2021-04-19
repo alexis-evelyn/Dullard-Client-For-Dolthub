@@ -5,11 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -96,7 +100,6 @@ public class RepoDetails extends AppCompatActivity {
         int id = item.getItemId();
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             HelperMethods.openSettings(view);
 
@@ -115,11 +118,40 @@ public class RepoDetails extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_clone_repo) {
             cloneRepo(view, this.repoId);
-
+            return true;
+        } else if (id == R.id.action_start_sql_server) {
+            startSQLServer(view, this.repoId);
             return true;
         }
 
-        return true;
+        return false;
+    }
+
+    private void startSQLServer(View view, String repoName) {
+        // TODO: Check if repo is cloned
+        Snackbar.make(view, String.format(getString(R.string.starting_sql_server), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> {
+            TextView tablesTest = findViewById(R.id.repo_tables_test);
+            tablesTest.setText((String) backgroundReturnValue.get());
+        };
+
+        // TODO: Fix so this doesn't get halted when the activity is exited by the user.
+        //    That way we don't have corrupt clones from the CLI just being halted
+        //    (and this is supposed to be a background action anyway).
+        Runnable backgroundRunnable = () -> {
+            Cli cli = new Cli(getApplicationContext());
+
+            backgroundReturnValue.set(HelperMethods.strip(cli.startSQLServer(this.getRepoFolderName())));
+
+            runOnUiThread(updateUI);
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.setName("Starting SQL Server (RepoDetails): " + this.repoId);
+        backgroundThread.start();
     }
 
     private void cloneRepo(View view, String repoName) {

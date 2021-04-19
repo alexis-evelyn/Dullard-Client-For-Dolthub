@@ -8,6 +8,7 @@
     <string name="main_sidebar">Main Sidebar</string>
     <string name="clone_repo">Clone Repo</string>
     <string name="share_repo">Share Repo</string>
+    <string name="sql_server">Start SQL Server</string>
     <string name="go_back">Go Back</string>
     <string name="action_settings">Settings</string>
     <string name="retrieve_dolt_version">Retrieve Dolt Version</string>
@@ -45,6 +46,7 @@
     <string name="invalid_repo_specified_description">Invalid Repo Specified!</string>
     <string name="repo_details">Repo Details</string>
     <string name="cloning_repo">Cloning Repo: %s</string>
+    <string name="starting_sql_server">Starting SQL Server For Repo: %s</string>
     <!-- End Repo Details Activity -->
 
     <!-- Setting Screens -->
@@ -76,6 +78,23 @@
     <string name="material_icons">Material Icons</string>
     <string name="material_icons_desc">Apache 2.0 - Icons based on the Material Design principals</string>
     <!-- End Setting Screens -->
+
+    <!-- Permissions -->
+    <string name="permission_group_repos">Manage Repos</string>
+    <string name="permission_group_repos_desc">clone, create, and delete Dolt repos on behalf of the user</string>
+
+    <string name="permission_start_server">Start Dolt SQL Servers</string>
+    <string name="permission_start_server_desc">start Dolt SQL servers on behalf of the user</string>
+
+    <string name="permission_clone_repo">Clone Repos</string>
+    <string name="permission_clone_repo_desc">clone Dolt repos on behalf of the user</string>
+
+    <string name="permission_init_repo">Create Repos</string>
+    <string name="permission_init_repo_desc">create Dolt repos on behalf of the user</string>
+
+    <string name="permission_delete_repo">Delete Repos</string>
+    <string name="permission_delete_repo_desc">delete Dolt repos on behalf of the user</string>
+    <!-- End Permissions -->
 
     <!-- Other -->
     <string name="blank" />

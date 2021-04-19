@@ -10,6 +10,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_start_sql_server"
+        android:icon="@drawable/round_dns_24"
+        android:title="@string/share_repo"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_clone_repo"
         android:icon="@drawable/round_download_24"
         android:title="@string/clone_repo"

@@ -106,14 +106,44 @@
     <!-- TODO: Implement Starting MySQL Server Permission, Cloning Repo Permission, Deleting Repo Permission -->
     <!-- https://developer.android.com/guide/topics/permissions/defining -->
     <permission
-        android:name="dullard.repos.DANGEROUS"
-        android:label="Dangerous Permission Label"
-        android:description="@string/settings"
-        android:permissionGroup="dullard.repos.REPOS"
+        android:permissionGroup="dullard.permissions-group.SERVER"
+        android:name="dullard.permissions.repos.START_SERVER"
+        android:label="@string/permission_start_server"
+        android:description="@string/permission_start_server_desc"
+        android:protectionLevel="normal" />
+
+    <permission
+        android:permissionGroup="dullard.permissions-group.REPOS"
+        android:name="dullard.permissions.repos.CLONE_REPO"
+        android:label="@string/permission_clone_repo"
+        android:description="@string/permission_clone_repo_desc"
         android:protectionLevel="dangerous" />
 
-    <permission-group android:description="@string/settings"
-        android:icon="@drawable/rou"
-        android:label="Dullard Repo Permissions Label"
-        android:name="dullard.repos.REPOS" />
+    <permission
+        android:permissionGroup="dullard.permissions-group.REPOS"
+        android:name="dullard.permissions.repos.INIT_REPO"
+        android:label="@string/permission_init_repo"
+        android:description="@string/permission_init_repo_desc"
+        android:protectionLevel="dangerous" />
+
+    <permission
+        android:permissionGroup="dullard.permissions-group.REPOS"
+        android:name="dullard.permissions.repos.DELETE_REPO"
+        android:label="@string/permission_delete_repo"
+        android:description="@string/permission_delete_repo_desc"
+        android:protectionLevel="dangerous" />
+
+    <!-- The Permission Group Overrides The Text For Individual Permissions -->
+    <permission-group
+        android:name="dullard.permissions-group.REPOS"
+        android:label="@string/permission_group_repos"
+        android:description="@string/permission_group_repos_desc"
+        android:icon="@drawable/round_bar_chart_24" />
+
+    <!-- This exists to give a nice icon to the user when they view the permission in the settings app -->
+    <permission-group
+        android:name="dullard.permissions-group.SERVER"
+        android:label="@string/permission_start_server"
+        android:description="@string/permission_start_server_desc"
+        android:icon="@drawable/round_dns_24" />
 </manifest>

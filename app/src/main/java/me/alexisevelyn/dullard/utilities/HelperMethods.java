@@ -59,6 +59,11 @@ public class HelperMethods {
     }
 
     public static void writeTextFile(File file, String string) throws IOException {
+        if (!file.exists()) {
+            Log.e(tagName, "Creating New File: " + file.getAbsolutePath());
+            file.createNewFile();
+        }
+
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 

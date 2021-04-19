@@ -3,6 +3,9 @@ package me.alexisevelyn.dullard.utilities;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +16,7 @@ public class Cli {
     // Version Command `dolt version`
 
     private static final String tagName = "DullardCli";
-    private Context context = null;
+    private Context context;
 
     public Cli(Context context) {
         this.context = context;
@@ -56,7 +59,7 @@ public class Cli {
             ps.directory(home);
 
             // Disable to hide errors from Dolt CLI
-            // ps.redirectErrorStream(true);
+//            ps.redirectErrorStream(true);
 
             Process process = ps.start();
 
@@ -95,6 +98,33 @@ public class Cli {
 
     public String retrieveTables(String repoFolder) {
         return this.executeQuery(repoFolder, "show tables;");
+    }
+
+    public String startSQLServer(String repoFolderName) {
+        File repoFolder = new File("repos", repoFolderName);
+        File absoluteRepoPath = new File(context.getApplicationInfo().dataDir + "/files", repoFolder.getPath());
+        File configFile = new File(absoluteRepoPath, "config.yaml");
+
+        try {
+            // Read Config From Assets
+            InputStream configFileInputStream = context.getAssets().open("sql-server-config.yaml");
+
+            // Store Config In Repo Folder
+            HelperMethods.writeTextFile(configFile, HelperMethods.readInputStream(configFileInputStream).toString());
+
+            // Execute SQL Server With Stored Config
+            String results = this.executeDolt(repoFolder, "sql-server", "--config=config.yaml");
+
+            // Delete Config From Repo Folder
+            configFile.delete();
+
+            // Return Results
+            return results;
+        } catch (IOException e) {
+            Log.e(tagName, "Exception Reading Config File!!! Exception: " + e.getLocalizedMessage());
+        }
+
+        return "Failed Starting Server!!!";
     }
 
     public void cloneRepo(String repoID) {

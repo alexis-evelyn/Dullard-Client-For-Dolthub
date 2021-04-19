@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import me.alexisevelyn.dullard.R;
 
 public class LegalFragment extends PreferenceFragmentCompat {
-    private static String tagName = "DullardLegal";
+    private static final String tagName = "DullardLegal";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

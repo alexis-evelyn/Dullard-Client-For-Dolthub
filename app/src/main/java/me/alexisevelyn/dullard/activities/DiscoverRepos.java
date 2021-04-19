@@ -31,16 +31,16 @@ import me.alexisevelyn.dullard.views.RepoCard;
 
 // TODO: Detect if connected to internet to decide when to retry loading live
 public class DiscoverRepos extends AppCompatActivity {
-    private static String tagName = "DullardScrolling";
+    private static final String tagName = "DullardScrolling";
 
     // For Reusing Same API Object
     private Api api = null;
 
     // The Private GraphQL API Often Repeats Repos We've Already Seen, So Sometimes We Have To Request More Data
     private int currentTries = 0;
-    private int maxTries = 3;
+    private final int maxTries = 3;
     private int repeatedRanOutOfTriesMessage = 0; // Stop's The App From Being Chatty
-    private int maxRepeatedRanOutOfTriesMessage = 1;
+    private final int maxRepeatedRanOutOfTriesMessage = 1;
     private boolean registeredNetworkListener = false; // To not register the listener more than once
 
     @Override
@@ -123,25 +123,27 @@ public class DiscoverRepos extends AppCompatActivity {
 
         // We get one free update attempt before we register the network change callback
         // After that, we wait until the network is available before trying again
-        ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
-        connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
-            @Override
-            public void onAvailable(Network network) {
-                // If Network Becomes Available And We Still Have The Placeholder Card, Update
-                LinearLayout repoView = findViewById(R.id.repos);
-                if(repoView.findViewById(R.id.placeholder_repo) != null) {
-                    Thread reposThread = new Thread(reposRunnable);
-                    reposThread.setName("Retrieving ReposList Network Came Online (DiscoverRepos)");
-                    reposThread.start();
+        if (!this.registeredNetworkListener) {
+            ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+            connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(Network network) {
+                    // If Network Becomes Available And We Still Have The Placeholder Card, Update
+                    LinearLayout repoView = findViewById(R.id.repos);
+                    if (repoView.findViewById(R.id.placeholder_repo) != null) {
+                        Thread reposThread = new Thread(reposRunnable);
+                        reposThread.setName("Retrieving ReposList Network Came Online (DiscoverRepos)");
+                        reposThread.start();
+                    }
                 }
-            }
 
-            @Override
-            public void onLost(Network network) {
-                // We don't need to do anything when the network is lost right now.
-                // Maybe we can add a message or something to alert the user later.
-            }
-        });
+                @Override
+                public void onLost(Network network) {
+                    // We don't need to do anything when the network is lost right now.
+                    // Maybe we can add a message or something to alert the user later.
+                }
+            });
+        }
 
         this.registeredNetworkListener = true;
     }
@@ -249,12 +251,12 @@ public class DiscoverRepos extends AppCompatActivity {
 
             currentTries += 1;
             retrieveAndPopulateRepos();
-        } else if (!hasAddedMoreData && (currentTries >= maxTries)) {
+        } else if (!hasAddedMoreData) {
             if (repeatedRanOutOfTriesMessage < maxRepeatedRanOutOfTriesMessage) {
                 repeatedRanOutOfTriesMessage += 1;
                 Log.w(tagName, "Ran Out Of Tries For Loading New Data!!!");
             }
-        } else if (hasAddedMoreData) {
+        } else {
             repeatedRanOutOfTriesMessage = 0;
             Log.d(tagName, "Added More Data!!! Current Try: " + currentTries);
         }

@@ -83,5 +83,7 @@
     <string name="filter_view_dolthub_https_deep_link">Preview Dolthub Repo</string>
     <string name="filter_view_dolthub_dolt_deep_link">Preview Dolthub Repo</string>
     <string name="not_implemented">Not Implemented</string>
+    <string name="byte_size_binary">"%.1f %ciB"</string>
+    <string name="byte_size_si">"%.1f %cB"</string>
     <!-- End Other -->
 </resources>

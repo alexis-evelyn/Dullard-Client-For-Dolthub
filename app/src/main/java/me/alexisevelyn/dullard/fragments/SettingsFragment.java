@@ -9,7 +9,7 @@ import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    private static String tagName = "DullardSettings";
+    private static final String tagName = "DullardSettings";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

@@ -12,7 +12,7 @@ public class Cli {
     // Expected Version - 0.24.3
     // Version Command `dolt version`
 
-    private static String tagName = "DullardCli";
+    private static final String tagName = "DullardCli";
     private Context context = null;
 
     public Cli(Context context) {

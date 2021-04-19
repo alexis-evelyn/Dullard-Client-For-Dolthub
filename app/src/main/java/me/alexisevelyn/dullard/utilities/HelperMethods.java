@@ -30,7 +30,7 @@ import java.util.Comparator;
 import me.alexisevelyn.dullard.activities.Settings;
 
 public class HelperMethods {
-    private static String tagName = "DullardHelpers";
+    private static final String tagName = "DullardHelpers";
 
     public static StringBuilder readInputStream(InputStream inputStream) throws IOException {
         StringBuilder builder = new StringBuilder();
@@ -38,7 +38,7 @@ public class HelperMethods {
 
         String line;
         while ((line = in.readLine()) != null) {
-            builder.append(line + "\n");
+            builder.append(line).append("\n");
         }
 
 //        in.close();
@@ -51,7 +51,7 @@ public class HelperMethods {
 
         String line;
         while ((line = reader.readLine()) != null) {
-            builder.append(line + "\n");
+            builder.append(line).append("\n");
         }
 
         reader.close();
@@ -111,6 +111,8 @@ public class HelperMethods {
             bytes /= 1000;
             ci.next();
         }
+
+        // TODO: R.string.byte_size_si
         return String.format("%.1f %cB", bytes / 1000.0, ci.current());
     }
 
@@ -127,6 +129,8 @@ public class HelperMethods {
             ci.next();
         }
         value *= Long.signum(bytes);
+
+        // TODO: R.string.byte_size_binary
         return String.format("%.1f %ciB", value / 1024.0, ci.current());
     }
 
@@ -159,7 +163,7 @@ public class HelperMethods {
     public static JSONArray sortReposBySize(JSONArray repos, boolean reversed) {
         ArrayList<JSONObject> list = getRepoListForSort(repos);
 
-        Collections.sort(list, (Comparator<JSONObject>) (a, b) -> {
+        list.sort((Comparator<JSONObject>) (a, b) -> {
             long a_size = 0L;
             long b_size = 0L;
 
@@ -194,15 +198,18 @@ public class HelperMethods {
 
     // This Checks The User's Preferences For Day/Night Mode And Sets The Mode
     public static boolean setDayNightMode(String day_night_value) {
-        if (day_night_value.equals("default-dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        else if (day_night_value.equals("default-light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if (day_night_value.equals("default-system"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        else
-            return false;
-
-        return true;
+        switch (day_night_value) {
+            case "default-dark":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                return true;
+            case "default-light":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                return true;
+            case "default-system":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                return true;
+            default:
+                return false;
+        }
     }
 }

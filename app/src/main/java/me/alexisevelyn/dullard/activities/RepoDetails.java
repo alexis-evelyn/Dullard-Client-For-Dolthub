@@ -27,7 +27,7 @@ import me.alexisevelyn.dullard.utilities.Cli;
 import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class RepoDetails extends AppCompatActivity {
-    private static String tagName = "DullardRepoDetails";
+    private static final String tagName = "DullardRepoDetails";
 
     private Api api;
     private String repoId;

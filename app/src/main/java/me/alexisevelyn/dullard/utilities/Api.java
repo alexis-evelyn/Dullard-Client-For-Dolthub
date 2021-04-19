@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Api {
-    private static String tagName = "DullardApi";
+    private static final String tagName = "DullardApi";
 
     // TODO: Determine If Token Has Expiration Date!!!
     private String token = null;

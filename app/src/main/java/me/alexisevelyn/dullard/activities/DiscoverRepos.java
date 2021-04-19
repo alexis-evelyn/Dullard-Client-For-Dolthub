@@ -118,6 +118,7 @@ public class DiscoverRepos extends AppCompatActivity {
         };
 
         Thread reposThread = new Thread(reposRunnable);
+        reposThread.setName("Retrieving ReposList Free Attempt (DiscoverRepos)");
         reposThread.start();
 
         // We get one free update attempt before we register the network change callback
@@ -130,6 +131,7 @@ public class DiscoverRepos extends AppCompatActivity {
                 LinearLayout repoView = findViewById(R.id.repos);
                 if(repoView.findViewById(R.id.placeholder_repo) != null) {
                     Thread reposThread = new Thread(reposRunnable);
+                    reposThread.setName("Retrieving ReposList Network Came Online (DiscoverRepos)");
                     reposThread.start();
                 }
             }
@@ -302,6 +304,7 @@ public class DiscoverRepos extends AppCompatActivity {
         };
 
         Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.setName("Retrieving Dolt Version (DiscoverRepos)");
         backgroundThread.start();
     }
 

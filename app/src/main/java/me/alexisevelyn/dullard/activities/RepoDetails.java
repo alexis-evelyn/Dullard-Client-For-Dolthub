@@ -146,6 +146,7 @@ public class RepoDetails extends AppCompatActivity {
         };
 
         Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.setName("Cloning (RepoDetails): " + this.repoId);
         backgroundThread.start();
     }
 
@@ -297,6 +298,7 @@ public class RepoDetails extends AppCompatActivity {
         };
 
         Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.setName("Retrieving Description (RepoDetails) From: " + this.repoId);
         backgroundThread.start();
     }
 }

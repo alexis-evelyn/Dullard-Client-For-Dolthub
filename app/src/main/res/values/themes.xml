@@ -29,7 +29,7 @@
     </style>
 
     <!-- Action Bar and Menu Theming -->
-    <!-- https://stackoverflow.com/a/29316237/6828099https://stackoverflow.com/a/29316237/6828099 -->
+    <!-- https://stackoverflow.com/a/29316237/6828099 -->
     <style name="Theme.Dullard.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

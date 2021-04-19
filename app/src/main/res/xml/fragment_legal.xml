@@ -6,25 +6,16 @@
     <PreferenceCategory app:title="@string/licenses_preferences_category">
         <Preference app:summary="@string/dolthub_cli_desc"
             app:title="@string/dolthub_cli">
-
-            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://github.com/dolthub/dolt/blob/master/LICENSE
-                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
             <intent android:action="android.intent.action.VIEW" android:data="https://github.com/dolthub/dolt/blob/master/LICENSE" />
         </Preference>
 
         <Preference app:summary="@string/androidx_libraries_desc"
             app:title="@string/androidx_libraries">
-
-            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://source.android.com/setup/start/licenses#why-apache-software-license
-                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
             <intent android:action="android.intent.action.VIEW" android:data="https://source.android.com/setup/start/licenses#why-apache-software-license" />
         </Preference>
 
         <Preference app:summary="@string/material_icons_desc"
             app:title="@string/material_icons">
-
-            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://fonts.google.com/icons?selected=Material+Icons
-                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
             <intent android:action="android.intent.action.VIEW" android:data="https://fonts.google.com/icons?selected=Material+Icons" />
         </Preference>
     </PreferenceCategory>

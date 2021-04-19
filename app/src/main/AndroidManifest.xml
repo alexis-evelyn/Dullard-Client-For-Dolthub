@@ -23,7 +23,7 @@
         <!-- The Current Starting Point For The App -->
         <!-- The Label Here Determines The Launcher Icon Name -->
         <activity
-            android:name="me.alexisevelyn.dullard.activities.DiscoverRepos"
+            android:name=".activities.DiscoverRepos"
             android:label="@string/app_name_short"
             android:theme="@style/Theme.Dullard.NoActionBar">
             <intent-filter>
@@ -35,7 +35,7 @@
 
         <!-- Details For The Repo - Also The Entry Point For Cloning and Viewing Tables -->
         <activity
-            android:name="me.alexisevelyn.dullard.activities.RepoDetails"
+            android:name=".activities.RepoDetails"
             android:label="@string/repo_details"
             android:theme="@style/Theme.Dullard.NoActionBar">
             <!-- Allows for links from the website urls to the Dolthub Repo -->
@@ -90,9 +90,30 @@
         </activity>
 
         <activity
-            android:name="me.alexisevelyn.dullard.activities.Settings"
+            android:name=".activities.Settings"
+            android:permission="dullard.repos.DANGEROUS"
             android:label="@string/settings"
             android:theme="@style/Theme.Dullard.NoActionBar" />
+
+        <service
+            android:name=".services.CliService"
+            android:exported="false"/>
+
+        <!-- TODO: Implement Ability For Apps To Request Starting MySQL Server With Pop Up Permission -->
+        <!-- TODO: Implement Custom Permissions So Users Can See What Apps Need Custom Permissions To Access Dullard -->
     </application>
 
+    <!-- TODO: Implement Starting MySQL Server Permission, Cloning Repo Permission, Deleting Repo Permission -->
+    <!-- https://developer.android.com/guide/topics/permissions/defining -->
+    <permission
+        android:name="dullard.repos.DANGEROUS"
+        android:label="Dangerous Permission Label"
+        android:description="@string/settings"
+        android:permissionGroup="dullard.repos.REPOS"
+        android:protectionLevel="dangerous" />
+
+    <permission-group android:description="@string/settings"
+        android:icon="@drawable/rou"
+        android:label="Dullard Repo Permissions Label"
+        android:name="dullard.repos.REPOS" />
 </manifest>

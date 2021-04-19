@@ -26,9 +26,6 @@
             app:key="feedback"
             app:summary="@string/feedback_desc"
             app:title="@string/feedback">
-
-            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://github.com/alexis-evelyn/Dullard-Client-For-Dolthub/issues
-                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
             <intent android:action="android.intent.action.VIEW" android:data="https://github.com/alexis-evelyn/Dullard-Client-For-Dolthub/issues" />
         </Preference>
 

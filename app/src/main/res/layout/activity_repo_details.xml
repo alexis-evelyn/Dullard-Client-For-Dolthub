@@ -28,21 +28,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:checkable="true">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/repo_description"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_marginVertical="@dimen/card_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/textview_text_color"
-                    android:text="@string/repoDescription" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/repo_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/textview_text_color"
+                        android:text="@string/repoDescription" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_marginVertical="@dimen/card_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true">
+
+                    <TextView
+                        android:id="@+id/repo_tables_test"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/textview_text_color"
+                        android:text="Waiting For Repos Table Test (If Repo Is Downloaded)" />
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </com.google.android.material.appbar.AppBarLayout>

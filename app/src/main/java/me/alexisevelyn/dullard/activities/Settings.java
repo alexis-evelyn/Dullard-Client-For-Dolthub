@@ -4,10 +4,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.ListPreference;
 
 import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.fragments.SettingsFragment;
 
+// https://developer.android.com/guide/topics/ui/settings
 public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

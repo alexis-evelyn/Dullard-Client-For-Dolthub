@@ -10,20 +10,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_version_test"
-        android:title="@string/retrieve_dolt_version"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_clone_repo"
         android:icon="@drawable/round_download_24"
         android:title="@string/clone_repo"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_read_rows_test"
-        android:title="@string/read_test_repo"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"

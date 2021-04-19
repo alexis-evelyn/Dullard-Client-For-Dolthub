@@ -33,7 +33,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include android:id="@+id/repos_scroll_view" layout="@layout/content_scrolling" />
+    <include android:id="@+id/repos_scroll_view" layout="@layout/content_discover_repos" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:visibility="gone"

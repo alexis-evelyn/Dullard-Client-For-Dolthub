@@ -93,16 +93,6 @@
             android:name="me.alexisevelyn.dullard.activities.Settings"
             android:label="@string/settings"
             android:theme="@style/Theme.Dullard.NoActionBar" />
-
-        <activity
-            android:name="me.alexisevelyn.dullard.activities.Legal"
-            android:label="@string/legal"
-            android:theme="@style/Theme.Dullard.NoActionBar">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

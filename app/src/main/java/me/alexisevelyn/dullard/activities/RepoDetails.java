@@ -13,13 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
 import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.utilities.Api;
+import me.alexisevelyn.dullard.utilities.Cli;
 import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class RepoDetails extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class RepoDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HelperMethods.loadDayNightPreferences(getApplicationContext());
         setContentView(R.layout.activity_repo_details);
 
         // This Activates The Custom Toolbar
@@ -97,7 +102,6 @@ public class RepoDetails extends AppCompatActivity {
 
             return true;
         } else if (id == R.id.action_share_repo) {
-            String repoName = this.repoId;
             String repoLink = String.format("https://www.dolthub.com/repositories/%s", this.repoId);
 
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -109,9 +113,47 @@ public class RepoDetails extends AppCompatActivity {
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, repoLink);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_repo_via)));
             return true;
+        } else if (id == R.id.action_clone_repo) {
+            cloneRepo(view, this.repoId);
+
+            return true;
         }
 
         return true;
+    }
+
+    private void cloneRepo(View view, String repoName) {
+        // TODO: Check if repo already cloned
+        Snackbar.make(view, String.format(getString(R.string.cloning_repo), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> {
+            TextView tablesTest = findViewById(R.id.repo_tables_test);
+            tablesTest.setText((String) backgroundReturnValue.get());
+        };
+
+        Runnable backgroundRunnable = () -> {
+            Cli cli = new Cli(getApplicationContext());
+            cli.cloneRepo(repoName);
+
+            backgroundReturnValue.set(HelperMethods.strip(cli.retrieveTables(this.getRepoFolderName())));
+
+            runOnUiThread(updateUI);
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.start();
+    }
+
+    private String getRepoFolderName() {
+        long slashCount = this.repoId.chars().filter(ch -> ch == '/').count();
+
+        if (slashCount != 1)
+            return null;
+
+        // TODO: Implement Repo Details Class To Handle All This Instead Of Repeating Regex
+        return this.repoId.split("/")[1];
     }
 
     private boolean getRepoFromIntent() {
@@ -121,7 +163,7 @@ public class RepoDetails extends AppCompatActivity {
             this.repoId = intent.getStringExtra("id");
             return true;
         } else if (intent.getData() != null) {
-            String action = intent.getAction();
+//            String action = intent.getAction();
             Uri data = intent.getData();
             String data_str = data.toString();
 

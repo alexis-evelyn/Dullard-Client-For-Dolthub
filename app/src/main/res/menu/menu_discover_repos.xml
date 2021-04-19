@@ -9,16 +9,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_clone_repo_test"
-        android:title="@string/clone_test_repo"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_read_rows_test"
-        android:title="@string/read_test_repo"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

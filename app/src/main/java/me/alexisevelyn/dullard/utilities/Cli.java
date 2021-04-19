@@ -19,12 +19,12 @@ public class Cli {
         this.context = context;
     }
 
-    public String executeDolt(String... arguments) {
+    private String executeDolt(String... arguments) {
         return executeDolt(null, arguments);
     }
 
     // The String... is VarArgs
-    public String executeDolt(File cwd, String... arguments) {
+    private String executeDolt(File cwd, String... arguments) {
         String dolt = context.getApplicationInfo().nativeLibraryDir + "/libdolt.so";
         String homeDir = context.getApplicationInfo().dataDir + "/files";
 
@@ -85,20 +85,20 @@ public class Cli {
         return (output == null) ? null : output.toString();
     }
 
-    public String readRows() {
-        String query = "select * from detect_environment;";
-
-        String repo_folder = "experiments";
-        String results = executeDolt(new File("repos", repo_folder), "sql", "-q", query, "-r", "json");
+    public String executeQuery(String repoFolder, String query) {
+        String results = executeDolt(new File("repos", repoFolder), "sql", "-q", query, "-r", "json");
 
         // JSONParser jsonParser = new JSONParser();
-        Log.d(tagName, "Read Rows Output: " + results);
+//        Log.d(tagName, "Read Rows Output: " + results);
         return results;
     }
 
-    public void cloneRepo() {
-        String repo = "archived_projects/experiments";
-        String output = executeDolt(new File("repos"), "clone", repo);
+    public String retrieveTables(String repoFolder) {
+        return this.executeQuery(repoFolder, "show tables;");
+    }
+
+    public void cloneRepo(String repoID) {
+        String output = executeDolt(new File("repos"), "clone", repoID);
         Log.d(tagName, "Clone Output: " + output);
     }
 

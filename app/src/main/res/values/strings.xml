@@ -1,146 +1,87 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">Dullard Client For Dolthub</string>
     <string name="app_name_short">Dullard</string>
+    <!-- End App Name -->
 
-    <string name="retrieve_dolt_version">Retrieve Dolt Version</string>
-    <string name="clone_test_repo">Clone Test Repo</string>
-    <string name="read_test_repo">Read Test Repo</string>
-    <string name="waiting_for_repo_list">Waiting For List Of Repos</string>
-
+    <!-- App Bar/Menu Buttons -->
     <string name="main_sidebar">Main Sidebar</string>
     <string name="clone_repo">Clone Repo</string>
     <string name="share_repo">Share Repo</string>
     <string name="go_back">Go Back</string>
+    <string name="action_settings">Settings</string>
+    <string name="retrieve_dolt_version">Retrieve Dolt Version</string>
+    <!-- End App Bar/Menu Buttons -->
 
-    <string name="no_description">No Description</string>
-    <string name="cloned_repo">Cloned Repo</string>
-
-    <string name="error_loading_repo_description">Error Loading Repo Description!</string>
-    <string name="null_repo_description">Unable to retrieve repo details, most likely due to connection issues!</string>
-
-    <string name="invalid_repo_specified_title">Invalid Repo!</string>
-    <string name="invalid_repo_specified_description">Invalid Repo Specified!</string>
-
-    <string name="filter_view_dolthub_https_deep_link">Preview Dolthub Repo</string>
-    <string name="filter_view_dolthub_dolt_deep_link">Preview Dolthub Repo</string>
-
+    <!-- Repo Card -->
     <string name="default_owner_text">Owner</string>
     <string name="default_repo_text">Repo</string>
     <string name="default_description_text">Description</string>
     <string name="default_size_text">0 B</string>
     <string name="default_stars_text">0 ✪</string>
     <string name="default_forks_text">0 🍴</string>
+    <string name="no_description">No Description</string>
+    <string name="card_repo_owner_separator">/</string>
 
     <!-- This will be replaced by Material icons -->
     <string name="stars_icon">✪</string>
     <string name="forks_icon">🍴</string>
     <string name="star_fork_card_format">%d %s</string>
+    <!-- End Repo Card -->
 
+    <!-- Discover Repos Activity -->
+    <string name="scrolling_top">Scrolling to the top</string>
+    <string name="waiting_for_repo_list">Waiting For List Of Repos</string>
+    <string name="cloned_repo">Cloned Repo</string>
     <string name="discover_repos_title">Discover Repos</string>
     <string name="discover_repos_title_long">Discover Repositories</string>
+    <!-- End Discover Repos Activity -->
 
-    <string name="blank" />
-
-    <string name="general_preferences_category">General</string>
+    <!-- Repo Details Activity -->
+    <string name="error_loading_repo_description">Error Loading Repo Description!</string>
+    <string name="null_repo_description">Unable to retrieve repo details, most likely due to connection issues!</string>
+    <string name="repoDescription">Loading Repo Description…</string>
+    <string name="invalid_repo_specified_title">Invalid Repo!</string>
+    <string name="invalid_repo_specified_description">Invalid Repo Specified!</string>
     <string name="repo_details">Repo Details</string>
-    <string name="scrolling_top">Scrolling to the top</string>
-    <string name="not_implemented">Not Implemented</string>
+    <string name="cloning_repo">Cloning Repo: %s</string>
+    <!-- End Repo Details Activity -->
+
+    <!-- Setting Screens -->
+    <string name="licenses_preferences_category">Licenses</string>
+    <string name="general_preferences_category">General</string>
+    <string name="other_preferences_category">Other</string>
+    <string name="customization_preferences_category">Customization</string>
     <string name="settings">Settings</string>
+
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_mode">System Mode</string>
+
+    <string name="day_night">Day/Night Mode</string>
+    <string name="day_night_desc">Allows you to choose to use Dark or Light mode for this app</string>
+
+    <string name="feedback">Send Feedback</string>
+    <string name="feedback_desc">Report technical issues or suggest new features</string>
+
     <string name="legal">Legal</string>
     <string name="legal_desc">Legal and Licenses related information for this app</string>
 
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
+    <string name="dolthub_cli">Dolthub CLI</string>
+    <string name="dolthub_cli_desc">Apache 2.0 - CLI To Clone and Manipulate Dolt Repos</string>
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
+    <string name="androidx_libraries">AndroidX Libraries</string>
+    <string name="androidx_libraries_desc">Apache 2.0 - Libraries To Aid In The Creation of Apps For Android</string>
 
-        "Bold, graphic, intentional.\n\n"
+    <string name="material_icons">Material Icons</string>
+    <string name="material_icons_desc">Apache 2.0 - Icons based on the Material Design principals</string>
+    <!-- End Setting Screens -->
 
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-
+    <!-- Other -->
+    <string name="blank" />
     <string name="share_repo_via">Share Dolthub Repo via</string>
-    <string name="action_settings">Settings</string>
-    <string name="repoDescription">Loading Repo Description…</string>
-    <string name="card_repo_owner_separator">/</string>
+    <string name="filter_view_dolthub_https_deep_link">Preview Dolthub Repo</string>
+    <string name="filter_view_dolthub_dolt_deep_link">Preview Dolthub Repo</string>
+    <string name="not_implemented">Not Implemented</string>
+    <!-- End Other -->
 </resources>

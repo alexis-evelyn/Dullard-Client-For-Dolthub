@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
+<PreferenceScreen
     xmlns:android="https://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.SwitchPreference
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="Turn this option on or off"
-        android:title="Settings option" />
+    <PreferenceCategory app:title="@string/licenses_preferences_category">
+        <Preference app:summary="@string/dolthub_cli_desc"
+            app:title="@string/dolthub_cli">
 
-<!--    <ListPreference-->
-<!--        android:dialogTitle="Select duration"-->
-<!--        android:entries="@array/settings_list_preference_titles"-->
-<!--        android:entryValues="@array/settings_list_preference_values"-->
-<!--        android:key="list"-->
-<!--        android:summary="Click to show a list to choose from"-->
-<!--        android:title="List Preference" />-->
-
-    <PreferenceCategory app:title="@string/general_preferences_category">
-        <Preference android:summary="@string/legal_desc"
-            android:title="@string/legal">
-
-            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://www.example.com
+            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://github.com/dolthub/dolt/blob/master/LICENSE
                    However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
-            <intent android:action="android.intent.action.VIEW"
-                    android:data="https://www.example.com" />
+            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/dolthub/dolt/blob/master/LICENSE" />
+        </Preference>
+
+        <Preference app:summary="@string/androidx_libraries_desc"
+            app:title="@string/androidx_libraries">
+
+            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://source.android.com/setup/start/licenses#why-apache-software-license
+                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
+            <intent android:action="android.intent.action.VIEW" android:data="https://source.android.com/setup/start/licenses#why-apache-software-license" />
+        </Preference>
+
+        <Preference app:summary="@string/material_icons_desc"
+            app:title="@string/material_icons">
+
+            <!-- Why does this am command work: adb shell am start -W -a android.intent.action.VIEW -d https://fonts.google.com/icons?selected=Material+Icons
+                   However, this intent does not work no matter what I try. The error is always android.content.ActivityNotFoundException: No Activity found to handle Intent {  } -->
+            <intent android:action="android.intent.action.VIEW" android:data="https://fonts.google.com/icons?selected=Material+Icons" />
         </Preference>
     </PreferenceCategory>
 
-</androidx.preference.PreferenceScreen>
+</PreferenceScreen>

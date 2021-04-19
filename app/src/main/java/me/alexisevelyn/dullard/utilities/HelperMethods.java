@@ -1,8 +1,13 @@
 package me.alexisevelyn.dullard.utilities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,5 +180,29 @@ public class HelperMethods {
     public static void openSettings(View view) {
         Intent intent = new Intent(view.getContext(), Settings.class);
         view.getContext().startActivity(intent);
+    }
+
+    // This allows me to load the user's chosen Day/Night Mode
+    public static void loadDayNightPreferences(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String chosenDayNight = prefs.getString("themes_day_night_preferences", "default-system");
+
+        // The app defaults to System Mode, So We Ignore It If It's System Mode To Speed Up Activity Loading
+        if (!chosenDayNight.equals("default-system"))
+            setDayNightMode(chosenDayNight);
+    }
+
+    // This Checks The User's Preferences For Day/Night Mode And Sets The Mode
+    public static boolean setDayNightMode(String day_night_value) {
+        if (day_night_value.equals("default-dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else if (day_night_value.equals("default-light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if (day_night_value.equals("default-system"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        else
+            return false;
+
+        return true;
     }
 }

@@ -46,7 +46,8 @@ public class DiscoverRepos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrolling);
+        HelperMethods.loadDayNightPreferences(getApplicationContext());
+        setContentView(R.layout.activity_discover_repos);
 
         // This Activates The Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -279,14 +280,6 @@ public class DiscoverRepos extends AppCompatActivity {
             getVersion(view);
 
             return true;
-        } else if (id == R.id.action_clone_repo_test) {
-            cloneRepo(view);
-
-            return true;
-        } else if (id == R.id.action_read_rows_test) {
-            readRows(view);
-
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -302,41 +295,6 @@ public class DiscoverRepos extends AppCompatActivity {
         Runnable backgroundRunnable = () -> {
             Cli cli = new Cli(getApplicationContext());
             backgroundReturnValue.set(HelperMethods.strip(cli.getVersion()));
-
-            runOnUiThread(updateUI);
-        };
-
-        Thread backgroundThread = new Thread(backgroundRunnable);
-        backgroundThread.start();
-    }
-
-    private void cloneRepo(View view) {
-        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
-
-        Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-        Runnable backgroundRunnable = () -> {
-            Cli cli = new Cli(getApplicationContext());
-            cli.cloneRepo();
-
-            String clonedRepo = getString(R.string.cloned_repo);
-            backgroundReturnValue.set(clonedRepo);
-
-            runOnUiThread(updateUI);
-        };
-
-        Thread backgroundThread = new Thread(backgroundRunnable);
-        backgroundThread.start();
-    }
-
-    private void readRows(View view) {
-        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
-
-        Runnable updateUI = () -> Snackbar.make(view, (String) backgroundReturnValue.get(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-        Runnable backgroundRunnable = () -> {
-            Cli cli = new Cli(getApplicationContext());
-            backgroundReturnValue.set(HelperMethods.strip(cli.readRows()));
 
             runOnUiThread(updateUI);
         };

@@ -207,6 +207,7 @@ public class DiscoverRepos extends AppCompatActivity {
                 description = !HelperMethods.strip(description).equals("") ? HelperMethods.strip(description) : getString(R.string.no_description);
 
                 RepoCard repoItem = new RepoCard(this);
+                repoItem.setBackgroundColor(getColor(R.color.transparent)); // Why can't I set this in the RepoCard's XML?
                 repoItem.setTag(R.id.repo_id_tag, id);
                 repoItem.setOwner(ownerName);
                 repoItem.setRepo(repoName);

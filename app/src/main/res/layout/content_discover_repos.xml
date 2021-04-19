@@ -16,6 +16,7 @@
         android:id="@+id/repos">
 
             <me.alexisevelyn.dullard.views.RepoCard
+                app:cardBackgroundColor="@color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/placeholder_repo"

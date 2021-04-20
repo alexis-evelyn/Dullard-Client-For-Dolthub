@@ -17,6 +17,8 @@ public class Cli {
 
     private static final String tagName = "DullardCli";
     private Context context;
+    private Process process = null;
+    private boolean isSQLServerRunning = false;
 
     public Cli(Context context) {
         this.context = context;
@@ -61,7 +63,7 @@ public class Cli {
             // Disable to hide errors from Dolt CLI
 //            ps.redirectErrorStream(true);
 
-            Process process = ps.start();
+            this.process = ps.start();
 
             InputStream inputStream = process.getInputStream();
 
@@ -100,6 +102,15 @@ public class Cli {
         return this.executeQuery(repoFolder, "show tables;");
     }
 
+    public boolean isSQLServerRunning() {
+        return this.isSQLServerRunning;
+    }
+
+    public void stopSQLServer() {
+        this.process.destroy();
+        this.isSQLServerRunning = false;
+    }
+
     public String startSQLServer(String repoFolderName) {
         File repoFolder = new File("repos", repoFolderName);
         File absoluteRepoPath = new File(context.getApplicationInfo().dataDir + "/files", repoFolder.getPath());
@@ -111,6 +122,9 @@ public class Cli {
 
             // Store Config In Repo Folder
             HelperMethods.writeTextFile(configFile, HelperMethods.readInputStream(configFileInputStream).toString());
+
+            // Mark Server As Running
+            this.isSQLServerRunning = true;
 
             // Execute SQL Server With Stored Config
             String results = this.executeDolt(repoFolder, "sql-server", "--config=config.yaml");

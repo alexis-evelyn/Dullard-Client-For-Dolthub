@@ -1,28 +1,23 @@
 package me.alexisevelyn.dullard.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
 import me.alexisevelyn.dullard.R;
@@ -37,6 +32,7 @@ public class RepoDetails extends AppCompatActivity {
     private String repoId;
     private JSONObject repoDescription;
     private SwipeRefreshLayout refreshLayout;
+    private AtomicReference<Cli> sqlServerCli = new AtomicReference<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +118,31 @@ public class RepoDetails extends AppCompatActivity {
         } else if (id == R.id.action_start_sql_server) {
             startSQLServer(view, this.repoId);
             return true;
+        } else if (id == R.id.action_stop_sql_server) {
+            stopSQLServer(view, this.repoId);
+            return true;
         }
 
         return false;
     }
 
+    private void stopSQLServer(View view, String repoName) {
+        if (this.sqlServerCli.get() == null || !this.sqlServerCli.get().isSQLServerRunning()) {
+            Snackbar.make(view, String.format(getString(R.string.not_running_sql_server), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            return;
+        }
+
+        this.sqlServerCli.get().stopSQLServer();
+        Snackbar.make(view, String.format(getString(R.string.stopping_sql_server), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
     private void startSQLServer(View view, String repoName) {
         // TODO: Check if repo is cloned
+        if (this.sqlServerCli.get() != null && this.sqlServerCli.get().isSQLServerRunning()) {
+            Snackbar.make(view, String.format(getString(R.string.already_started_sql_server), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            return;
+        }
+
         Snackbar.make(view, String.format(getString(R.string.starting_sql_server), repoName), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
@@ -143,15 +157,22 @@ public class RepoDetails extends AppCompatActivity {
         //    (and this is supposed to be a background action anyway).
         Runnable backgroundRunnable = () -> {
             Cli cli = new Cli(getApplicationContext());
+            sqlServerCli.set(cli);
 
-            backgroundReturnValue.set(HelperMethods.strip(cli.startSQLServer(this.getRepoFolderName())));
+            String results = cli.startSQLServer(this.getRepoFolderName());
+
+            // To Prevent Crashing From Missing Results As Results Aren't Important Here
+            if (results == null)
+                return;
+
+            backgroundReturnValue.set(HelperMethods.strip(results));
 
             runOnUiThread(updateUI);
         };
 
-        Thread backgroundThread = new Thread(backgroundRunnable);
-        backgroundThread.setName("Starting SQL Server (RepoDetails): " + this.repoId);
-        backgroundThread.start();
+        Thread sqlServer = new Thread(backgroundRunnable);
+        sqlServer.setName("SQL Server (RepoDetails): " + this.repoId);
+        sqlServer.start();
     }
 
     private void cloneRepo(View view, String repoName) {

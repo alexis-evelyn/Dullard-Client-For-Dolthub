@@ -46,4 +46,5 @@ dependencies {
 
     // Added Libraries
     implementation 'androidx.preference:preference:1.1.1' // Apache 2.0
+    implementation 'io.noties.markwon:core:4.6.2' // Apache 2.0
 }

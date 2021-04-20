@@ -69,7 +69,7 @@ public class Api {
 
         try {
             JSONObject parameters = getListReposParameters();
-            HttpURLConnection connection = getAPIConnection(parameters);
+            HttpURLConnection connection = getPrivateAPIConnection(parameters);
 
             int responseCode = connection.getResponseCode();
 
@@ -118,7 +118,7 @@ public class Api {
         return null;
     }
 
-    private HttpURLConnection getAPIConnection(JSONObject parameters) throws IOException {
+    private HttpURLConnection getPrivateAPIConnection(JSONObject parameters) throws IOException {
         URL url = new URL("https://www.dolthub.com/graphql");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -138,10 +138,79 @@ public class Api {
         return connection;
     }
 
-    public JSONObject getRepoDescription(String repoID) {
-        if (repoID == null)
+    private HttpURLConnection getPublicAPIConnection(JSONObject parameters, String ownerName, String repoName) throws IOException {
+        return getPublicAPIConnection(parameters, ownerName, repoName, null);
+    }
+
+    private HttpURLConnection getPublicAPIConnection(JSONObject parameters, String ownerName, String repoName, String branchName) throws IOException {
+        URL url;
+
+        if (branchName == null)
+            url = new URL(String.format("https://www.dolthub.com/api/v1alpha1/%s/%s", ownerName, repoName));
+        else
+            url = new URL(String.format("https://www.dolthub.com/api/v1alpha1/%s/%s/%s", ownerName, repoName, branchName));
+
+        try {
+            if (parameters != null && parameters.has("q")) {
+                String query = parameters.getString("q");
+                url = new URL(url, "?q=" + query);
+            }
+        } catch (JSONException e) {
+            Log.e(tagName, "JSONException While Reading Parameters: " + e.getLocalizedMessage());
+        }
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("User-Agent", "Dullard-App/0.1");
+        connection.setRequestProperty("Accept", "*/*");
+        connection.setRequestProperty("Content-Type", "application/json");
+//            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+
+        return connection;
+    }
+
+    public JSONArray getRepoFiles(String repoID) {
+        if (repoID == null || !repoID.contains("/"))
             return null;
 
+        // TODO: Implement Class For Owner Name, Repo Name (As Tuples Don't Exist In Java)
+        String[] repoIDParts = repoID.split("/");
+        String ownerName = repoIDParts[0];
+        String repoName = repoIDParts[1];
+
+        return getRepoFiles(ownerName, repoName);
+    }
+
+    public JSONArray getRepoFiles(String ownerName, String repoName) {
+        try {
+            JSONObject parameters = new JSONObject();
+            parameters.put("q", "select * from dolt_docs;");
+
+            HttpURLConnection connection = getPublicAPIConnection(parameters, ownerName, repoName);
+
+            int responseCode = connection.getResponseCode();
+
+            if(responseCode == 200) {
+                String response = HelperMethods.readInputStream(connection.getInputStream()).toString();
+                JSONObject results = new JSONObject(response);
+
+                return results.getJSONArray("rows");
+            } else {
+                Log.e(tagName, "Public API Status Code (Retrieving Repo Files): " + responseCode);
+            }
+        } catch (IOException | JSONException e) {
+            Log.e(tagName, "Exception Retrieving Repo Files! Exception: " + e.getLocalizedMessage());
+        }
+
+        return null;
+    }
+
+    public JSONObject getRepoDescription(String repoID) {
+        if (repoID == null || !repoID.contains("/"))
+            return null;
+
+        // TODO: Implement Class For Owner Name, Repo Name (As Tuples Don't Exist In Java)
         String[] repoIDParts = repoID.split("/");
         String ownerName = repoIDParts[0];
         String repoName = repoIDParts[1];
@@ -152,7 +221,7 @@ public class Api {
     public JSONObject getRepoDescription(String ownerName, String repoName) {
         try {
             JSONObject parameters = getRepoDescriptionParameters(ownerName, repoName);
-            HttpURLConnection connection = getAPIConnection(parameters);
+            HttpURLConnection connection = getPrivateAPIConnection(parameters);
 
             int responseCode = connection.getResponseCode();
 

@@ -15,11 +15,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.noties.markwon.Markwon;
 import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.utilities.Api;
 import me.alexisevelyn.dullard.utilities.Cli;
@@ -31,8 +33,10 @@ public class RepoDetails extends AppCompatActivity {
     private Api api;
     private String repoId;
     private JSONObject repoDescription;
+    private JSONArray repoFiles;
     private SwipeRefreshLayout refreshLayout;
     private AtomicReference<Cli> sqlServerCli = new AtomicReference<>();
+    private Markwon markwon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +78,13 @@ public class RepoDetails extends AppCompatActivity {
         }
 
         toolbar.setSubtitle(this.repoId);
-        loadAndPopulateRepoDescription();
+
+        this.markwon = Markwon.create(getApplicationContext());
+        loadAndPopulateRepoData();
 
         // To allow user to refresh repo details
         this.refreshLayout = findViewById(R.id.refresh_repo_details);
-        refreshLayout.setOnRefreshListener(this::loadAndPopulateRepoDescription);
+        refreshLayout.setOnRefreshListener(this::loadAndPopulateRepoData);
     }
 
     @Override
@@ -293,7 +299,7 @@ public class RepoDetails extends AppCompatActivity {
         return false;
     }
 
-    private void loadAndPopulateRepoDescription() {
+    private void loadAndPopulateRepoData() {
         // TODO: Determine if should attempt live update first then load from cache if any, then fail
         // Either potentially take a while attempting live update for always fresh info or load fast with cached data
 
@@ -302,6 +308,11 @@ public class RepoDetails extends AppCompatActivity {
 
         // Load Repo Description From API
         getRepoDescriptionFromNetwork();
+
+        Log.d(tagName, "Loading Repo Files!!! ID: " + repoId);
+
+        // Load Repo Files From API
+        getRepoFilesFromNetwork();
     }
 
     private void populateRepoDescription() {
@@ -309,16 +320,16 @@ public class RepoDetails extends AppCompatActivity {
 //        Log.d(tagName, repoDescription.toString());
 
         TextView descriptionView = findViewById(R.id.repo_description);
-        if (repoDescription == null) {
+        if (this.repoDescription == null) {
             descriptionView.setText(getString(R.string.null_repo_description));
             return;
         }
 
         try {
-            String description = repoDescription.getString("description");
+            String description = this.repoDescription.getString("description");
             description = (!HelperMethods.strip(description).equals("")) ? description : getString(R.string.no_description);
 
-            String rawSize = repoDescription.getString("size");
+            String rawSize = this.repoDescription.getString("size");
             String size = HelperMethods.humanReadableByteCountSI(Long.parseLong(rawSize));
 
             descriptionView.setText(description);
@@ -328,6 +339,49 @@ public class RepoDetails extends AppCompatActivity {
         } catch (JSONException e) {
             Log.e(tagName, "JSONException While Populating Repo Description! Exception: " + e.getLocalizedMessage());
             descriptionView.setText(getString(R.string.error_loading_repo_description));
+        }
+    }
+
+    private void populateRepoFiles() {
+        // This is ran on the UI Thread
+//        Log.d(tagName, repoDescription.toString());
+
+        TextView readMeView = findViewById(R.id.read_me);
+        TextView licenseView = findViewById(R.id.license);
+        if (this.repoFiles == null) {
+            readMeView.setText(getString(R.string.no_readme_found));
+            licenseView.setText(getString(R.string.no_license_found));
+            return;
+        }
+
+        try {
+            boolean foundReadMe = false;
+            boolean foundLicense = false;
+
+            int total_files = this.repoFiles.length();
+            for (int x = 0; x < total_files; x++) {
+                JSONObject file = (JSONObject) this.repoFiles.get(x);
+                String fileName = file.getString("doc_name");
+                String fileContents = file.getString("doc_text");
+
+                if (fileName.equals("README.md")) {
+                    markwon.setMarkdown(readMeView, fileContents);
+                    foundReadMe = true;
+                } else if (fileName.equals("LICENSE.md")) {
+                    markwon.setMarkdown(licenseView, fileContents);
+                    foundLicense = true;
+                }
+            }
+
+            if (!foundReadMe)
+                readMeView.setText(getString(R.string.no_readme_found));
+
+            if (!foundLicense)
+                licenseView.setText(getString(R.string.no_license_found));
+        } catch (JSONException e) {
+            Log.e(tagName, "JSONException While Populating Repo Description! Exception: " + e.getLocalizedMessage());
+            readMeView.setText(getString(R.string.no_readme_found));
+            licenseView.setText(getString(R.string.no_license_found));
         }
     }
 
@@ -352,6 +406,30 @@ public class RepoDetails extends AppCompatActivity {
 
         Thread backgroundThread = new Thread(backgroundRunnable);
         backgroundThread.setName("Retrieving Description (RepoDetails) From: " + this.repoId);
+        backgroundThread.start();
+    }
+
+    private void getRepoFilesFromNetwork() {
+        // This executes the network on a background thread
+        AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
+
+        Runnable updateUI = () -> {
+            this.repoFiles = (JSONArray) backgroundReturnValue.get();
+            populateRepoFiles();
+        };
+
+        Runnable backgroundRunnable = () -> {
+            backgroundReturnValue.set(api.getRepoFiles(repoId));
+
+            // Signals that refreshing is finished
+            if (refreshLayout != null) {
+                refreshLayout.setRefreshing(false);
+                runOnUiThread(updateUI);
+            }
+        };
+
+        Thread backgroundThread = new Thread(backgroundRunnable);
+        backgroundThread.setName("Retrieving Files (RepoDetails) From: " + this.repoId);
         backgroundThread.start();
     }
 }

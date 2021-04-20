@@ -51,6 +51,10 @@
     <string name="stopping_sql_server">Stopping SQL Server For Repo: %s</string>
     <string name="already_started_sql_server">%s already has been started</string>
     <string name="not_running_sql_server">%s is not running</string>
+    <string name="loading_readme">Loading ReadMe…</string>
+    <string name="loading_license">Loading License…</string>
+    <string name="no_readme_found">ReadMe not found</string>
+    <string name="no_license_found">License not found</string>
     <!-- End Repo Details Activity -->
 
     <!-- Setting Screens -->
@@ -81,6 +85,9 @@
 
     <string name="material_icons">Material Icons</string>
     <string name="material_icons_desc">Apache 2.0 - Icons based on the Material Design principals</string>
+
+    <string name="markwon">Markwon</string>
+    <string name="markwon_desc">Apache 2.0 - Android Markdown Parsing Library</string>
     <!-- End Setting Screens -->
 
     <!-- Permissions -->

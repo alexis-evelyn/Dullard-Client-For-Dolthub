@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +13,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class Cli {
-    // Expected Version - 0.24.3
-    // Version Command `dolt version`
-
     private static final String tagName = "DullardCli";
-    private Context context;
+    private final Context context;
     private Process process = null;
     private boolean isSQLServerRunning = false;
 
@@ -57,6 +55,7 @@ public class Cli {
                 Log.d(tagName, "Home Directory: " + home.getAbsolutePath());
             }
 
+            //noinspection ResultOfMethodCallIgnored
             home.mkdirs();
             ps.directory(home);
 
@@ -90,15 +89,17 @@ public class Cli {
         return (output == null) ? null : output.toString();
     }
 
-    public String executeQuery(String repoFolder, String query) {
+    public JSONArray executeQuery(String repoFolder, String query) throws JSONException {
         String results = executeDolt(new File("repos", repoFolder), "sql", "-q", query, "-r", "json");
 
-        // JSONParser jsonParser = new JSONParser();
-//        Log.d(tagName, "Read Rows Output: " + results);
-        return results;
+        JSONArray rows = null;
+        if (results != null)
+            rows = (JSONArray) new JSONObject(results).get("rows");
+
+        return rows;
     }
 
-    public String retrieveTables(String repoFolder) {
+    public JSONArray retrieveTables(String repoFolder) throws JSONException {
         return this.executeQuery(repoFolder, "show tables;");
     }
 

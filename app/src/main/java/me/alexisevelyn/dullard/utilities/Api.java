@@ -24,8 +24,8 @@ public class Api {
     private JSONArray repos = null;
 
     // Cache Repos
-    private Context context;
-    private File cachedRepos;
+    private final Context context;
+    private final File cachedRepos;
 
     public Api(Context context) {
         this.context = context;
@@ -60,10 +60,6 @@ public class Api {
     }
 
     public JSONArray listRepos() {
-        // TODO: Remove This!!! This allows Networking On Main Thread!!!
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
-
         // Turn on to add all seen repos to cache instead of just the current page
         boolean displayAllRepos = false;
 
@@ -79,6 +75,8 @@ public class Api {
 
                 token = results.getJSONObject("data").getJSONObject("discoverRepos").getString("nextPageToken");
 
+                // I may re-enable/remove functionality to this depending on how the public api will be implemented (we are using the private api)
+                //noinspection ConstantConditions
                 if(repos == null || !displayAllRepos) {
                     // New List - Never Opened App Before (Or Data Cleared)
                     repos = results.getJSONObject("data").getJSONObject("discoverRepos").getJSONArray("list");
@@ -89,7 +87,7 @@ public class Api {
                     for(int i = 0; i < tempArray.length(); i++) {
                         JSONObject tempRepo = tempArray.getJSONObject(i);
 
-                        Boolean notInExistingArray = true;
+                        boolean notInExistingArray = true;
                         for(int x = 0; x < repos.length(); x++) {
                             // TODO: Check to see if metadata has been updated!!!
                             if(tempRepo.get("_id").equals(repos.getJSONObject(x).get("_id"))) {
@@ -142,7 +140,7 @@ public class Api {
         return getPublicAPIConnection(parameters, ownerName, repoName, null);
     }
 
-    private HttpURLConnection getPublicAPIConnection(JSONObject parameters, String ownerName, String repoName, String branchName) throws IOException {
+    private HttpURLConnection getPublicAPIConnection(JSONObject parameters, String ownerName, String repoName, @SuppressWarnings("SameParameterValue") String branchName) throws IOException {
         URL url;
 
         if (branchName == null)

@@ -1,5 +1,6 @@
 package me.alexisevelyn.dullard.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -15,15 +16,16 @@ import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.utilities.HelperMethods;
 
 public class RepoCard extends MaterialCardView {
-    private Context context;
-    private String tagName = "RepoCard";
+    private final Context context;
+    private static final String tagName = "RepoCard";
 
-    // Do I need these?
+    // TODO: Do I need these?
     private String owner = null;
     private String repo = null;
     private String description = null;
     private String size = null;
 
+    // TODO: Do I need these?
     private long sizeRaw = 0L;
     private int stars = 0;
     private int forks = 0;
@@ -63,6 +65,7 @@ public class RepoCard extends MaterialCardView {
 
     // This sets the attributes from XML
     private void setAttributeSet(AttributeSet attributeSet) {
+        @SuppressLint("CustomViewStyleable")
         TypedArray view_set_keys = context.obtainStyledAttributes(attributeSet, R.styleable.repo_card);
 
         CharSequence owner_text = view_set_keys.getString(R.styleable.repo_card_owner_text);

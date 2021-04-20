@@ -1,5 +1,6 @@
 package me.alexisevelyn.dullard.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +25,6 @@ import java.io.InputStreamReader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import me.alexisevelyn.dullard.activities.Settings;
 
@@ -107,6 +106,7 @@ public class HelperMethods {
     }
 
     // Stolen From: https://stackoverflow.com/a/3758880/6828099
+    @SuppressLint("DefaultLocale")
     public static String humanReadableByteCountSI(long bytes) {
         if (-1000 < bytes && bytes < 1000) {
             return bytes + " B";
@@ -122,6 +122,7 @@ public class HelperMethods {
     }
 
     // Stolen From: https://stackoverflow.com/a/3758880/6828099
+    @SuppressLint("DefaultLocale")
     public static String humanReadableByteCountBin(long bytes) {
         long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
         if (absB < 1024) {
@@ -168,7 +169,7 @@ public class HelperMethods {
     public static JSONArray sortReposBySize(JSONArray repos, boolean reversed) {
         ArrayList<JSONObject> list = getRepoListForSort(repos);
 
-        list.sort((Comparator<JSONObject>) (a, b) -> {
+        list.sort((a, b) -> {
             long a_size = 0L;
             long b_size = 0L;
 

@@ -1,10 +1,10 @@
 package me.alexisevelyn.dullard.activities;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.ListPreference;
 
 import me.alexisevelyn.dullard.R;
 import me.alexisevelyn.dullard.fragments.SettingsFragment;

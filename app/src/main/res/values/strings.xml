@@ -55,6 +55,11 @@
     <string name="loading_license">Loading License…</string>
     <string name="no_readme_found">ReadMe not found</string>
     <string name="no_license_found">License not found</string>
+
+    <string name="repo_details_info_tab">Info</string>
+    <string name="repo_details_tables_tab">Tables</string>
+    <string name="repo_details_commits_tab">Commits</string>
+    <string name="repo_details_activities_tab">Activities</string>
     <!-- End Repo Details Activity -->
 
     <!-- Setting Screens -->

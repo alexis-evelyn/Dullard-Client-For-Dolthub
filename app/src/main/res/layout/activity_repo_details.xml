@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.RepoDetailsInfoFragment"
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,83 +25,52 @@
         android:layout_height="match_parent"
         tools:context=".activities.RepoDetails">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <com.google.android.material.tabs.TabLayout
+                app:tabBackground="?attr/colorPrimaryVariant"
+                app:tabTextColor="?attr/colorOnPrimary"
+                android:id="@+id/repo_details_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp"
+                app:tabMode="fixed"
+                app:tabGravity="fill">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_marginVertical="@dimen/card_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:checkable="true">
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/repo_details_info_tab"
+                    android:text="@string/repo_details_info_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/repo_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/textview_text_color"
-                        android:text="@string/repoDescription" />
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/repo_details_tables_tab"
+                    android:text="@string/repo_details_tables_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/repo_details_commits_tab"
+                    android:text="@string/repo_details_commits_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_marginVertical="@dimen/card_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:checkable="true">
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/repo_details_activities_tab"
+                    android:text="@string/repo_details_activities_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/repo_tables_test"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/textview_text_color"
-                        android:text="Waiting For Repos Table Test (If Repo Is Downloaded)" />
+            </com.google.android.material.tabs.TabLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/repo_details_tab_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_marginVertical="@dimen/card_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:checkable="true">
+        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/read_me"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/textview_text_color"
-                        android:text="@string/loading_readme" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_marginVertical="@dimen/card_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:checkable="true">
-
-                    <TextView
-                        android:id="@+id/license"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/textview_text_color"
-                        android:text="@string/loading_license" />
-
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </com.google.android.material.appbar.AppBarLayout>

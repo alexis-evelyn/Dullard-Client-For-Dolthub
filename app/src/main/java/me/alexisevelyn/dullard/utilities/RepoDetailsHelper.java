@@ -115,10 +115,7 @@ public class RepoDetailsHelper {
 
         AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
 
-        Runnable updateUI = () -> {
-            TextView tablesTest = this.context.findViewById(R.id.repo_tables_test);
-            tablesTest.setText((String) backgroundReturnValue.get());
-        };
+        Runnable updateUI = () -> Snackbar.make(view, String.format((String) backgroundReturnValue.get(), this.repoId), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         // TODO: Fix so this doesn't get halted when the activity is exited by the user.
         //    That way we don't have corrupt clones from the CLI just being halted
@@ -149,10 +146,7 @@ public class RepoDetailsHelper {
 
         AtomicReference<Object> backgroundReturnValue = new AtomicReference<>();
 
-        Runnable updateUI = () -> {
-            TextView tablesTest = this.context.findViewById(R.id.repo_tables_test);
-            tablesTest.setText((String) backgroundReturnValue.get());
-        };
+        Runnable updateUI = () -> Snackbar.make(view, String.format((String) backgroundReturnValue.get(), this.repoId), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         // TODO: Fix so this doesn't get halted when the activity is exited by the user.
         //    That way we don't have corrupt clones from the CLI just being halted

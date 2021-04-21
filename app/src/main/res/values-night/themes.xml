@@ -27,6 +27,10 @@
 
         <!-- Text Color For Repo Description - TODO: DEPRECATED -->
         <item name="textview_text_color">@color/white</item>
+        <item name="settings_background">#121212</item>
+
+        <!-- Preference Category Text Color -->
+        <item name="colorAccent">@color/secondary</item>
     </style>
 
     <!-- Action Bar and Menu Theming -->

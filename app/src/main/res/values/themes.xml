@@ -27,6 +27,10 @@
 
         <!-- Text Color For Repo Description - TODO: DEPRECATED -->
         <item name="textview_text_color">@color/black</item>
+        <item name="settings_background">#ffffff</item>
+
+        <!-- Preference Category Text Color -->
+        <item name="colorAccent">@color/primary_light</item>
     </style>
 
     <!-- Action Bar and Menu Theming -->

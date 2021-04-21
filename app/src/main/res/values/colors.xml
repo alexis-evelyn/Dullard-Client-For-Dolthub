@@ -9,11 +9,17 @@
     <color name="primary_dark">#00001f</color>
     <color name="primary_text">#ffffff</color>
 
-    <!-- TODO: Figure Out Complementary Color For Primary Color -->
-    <color name="secondary">#562a01</color>
-    <color name="secondary_light">#87532b</color>
-    <color name="secondary_dark">#300000</color>
+    <!-- Never Use For Te -->
+    <color name="secondary">#87e4fe</color>
+    <color name="secondary_light">#bcffff</color>
+    <color name="secondary_dark">#51b2cb</color>
     <color name="secondary_text">#ffffff</color>
+
+    <!-- The suggested complementary color - Performs Poorly: https://coolors.co/contrast-checker/562a01-050043 -->
+    <color name="complementary">#562A01</color>
+    <color name="complementary_light">#87532b</color>
+    <color name="complementary_dark">#300000</color>
+    <color name="complementary_text">#ffffff</color>
 
     <!-- TODO: Figure Out Repo Card Colors -->
     <color name="ripple_color_light">#ffff0000</color>

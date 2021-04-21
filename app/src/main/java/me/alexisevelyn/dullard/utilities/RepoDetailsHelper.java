@@ -3,6 +3,7 @@ package me.alexisevelyn.dullard.utilities;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,7 +19,9 @@ import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
+import io.noties.markwon.core.MarkwonTheme;
 import me.alexisevelyn.dullard.R;
 
 // This has no purpose other than to make the Activity class nicer to read
@@ -73,7 +76,20 @@ public class RepoDetailsHelper {
 
         toolbar.setSubtitle(this.repoId);
 
-        this.markwon = Markwon.create(context);
+        // Setup For Custom Link Color Not Attached To Secondary Color Attribute
+        this.markwon = Markwon.builder(context).usePlugin(new AbstractMarkwonPlugin() {
+            @Override
+            public void configureTheme(MarkwonTheme.Builder builder) {
+                // Modified From: https://stackoverflow.com/a/49361848/6828099
+                // This Resolves The Color Resource ID From The Current Theme
+                // We do this so the user can choose a custom theme and have their color set for the link text
+                TypedValue resolvedColor = new TypedValue();
+                context.getTheme().resolveAttribute(R.attr.linkOnPrimary, resolvedColor, true);
+
+                builder.linkColor(context.getColor(resolvedColor.resourceId));
+            }
+        }).build();
+
         loadAndPopulateRepoData();
 
         // To allow user to refresh repo details

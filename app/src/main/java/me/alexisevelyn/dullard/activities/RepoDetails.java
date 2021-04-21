@@ -29,7 +29,7 @@ public class RepoDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HelperMethods.loadDayNightPreferences(getApplicationContext());
+        HelperMethods.loadDayNightPreferences(this);
         setContentView(R.layout.activity_repo_details);
 
         // Initialize Default Fragment
@@ -82,7 +82,9 @@ public class RepoDetails extends AppCompatActivity {
             }
         });
 
-        this.helper = new RepoDetailsHelper(this);
+        // This makes sure that the helper is only ran after the fragment has loaded
+        AppCompatActivity self = this;
+        ft.runOnCommit(() -> helper = new RepoDetailsHelper(self));
     }
 
     @Override

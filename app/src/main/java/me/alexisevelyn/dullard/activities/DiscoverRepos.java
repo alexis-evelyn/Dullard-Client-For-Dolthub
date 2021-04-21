@@ -19,7 +19,7 @@ public class DiscoverRepos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HelperMethods.loadDayNightPreferences(getApplicationContext());
+        HelperMethods.loadDayNightPreferences(this);
         setContentView(R.layout.activity_discover_repos);
 
         this.helper = new DiscoverReposHelper(this);

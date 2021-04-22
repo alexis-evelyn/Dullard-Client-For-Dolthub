@@ -1,6 +1,7 @@
 package me.alexisevelyn.dullard.utilities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -138,6 +140,10 @@ public class RepoDetailsHelper {
         //    (and this is supposed to be a background action anyway).
         Runnable backgroundRunnable = () -> {
             Cli cli = new Cli(context);
+            cli.setUseRoot(shouldUseRoot());
+
+            Log.e(tagName, "Should Use Root: " + shouldUseRoot());
+
             sqlServerCli.set(cli);
 
             String results = cli.startSQLServer(this.getRepoFolderName());
@@ -422,5 +428,13 @@ public class RepoDetailsHelper {
         Thread backgroundThread = new Thread(backgroundRunnable);
         backgroundThread.setName("Retrieving Files (context) From: " + this.repoId);
         backgroundThread.start();
+    }
+
+    private boolean shouldUseRoot() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.context);
+        boolean enabledRoot = settings.getBoolean("root_preferences", false);
+
+        // TODO: Implement Per Repository Check If Use Root
+        return enabledRoot;
     }
 }

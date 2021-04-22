@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Cli {
@@ -19,6 +20,7 @@ public class Cli {
     private boolean isSQLServerRunning = false;
     private double percentOfRAMAllowed = 0.25;
     private boolean useRoot = false;
+    private boolean suggestMaxMemory = true;
 
     public Cli(Context context) {
         this.context = context;
@@ -32,6 +34,11 @@ public class Cli {
     // This allows the technical user to use root permission to debug the CLI (or bypass Android's OOMK).
     public void setUseRoot(boolean useRoot) {
         this.useRoot = useRoot;
+    }
+
+    // To Tell go-mysql-server to limit the memory being used
+    public void setSuggestMaxMemory(boolean suggestMaxMemory) {
+        this.suggestMaxMemory = suggestMaxMemory;
     }
 
     private String executeDolt(String... arguments) {
@@ -51,6 +58,21 @@ public class Cli {
             // I've been spoiled by Python lists :P
             System.arraycopy(arguments, 0, command, 1, arguments.length);
 
+            // If Granted Root Permission, Run As Root
+            if (this.useRoot) {
+                // su --preserve-environment -c
+                String[] rootCommand = new String[command.length+3];
+                rootCommand[0] = "su";
+                rootCommand[1] = "--preserve-environment";
+                rootCommand[2] = "-c";
+
+                System.arraycopy(command, 0, rootCommand, 3, command.length);
+                Log.d(tagName, "Root Command: " + Arrays.toString(rootCommand));
+
+                // Replace Original Command With Root Version
+                command = rootCommand;
+            }
+
             ProcessBuilder ps = new ProcessBuilder(command);
 
             // Retrieve Environment Variables And Set Home
@@ -58,18 +80,19 @@ public class Cli {
             env.clear();
             env.put("HOME", homeDir);
 
-
-            // TODO: Test `ulimit` to see if it works as the env var does not completely enforce the memory cap
-            // Android Has Low Memory Compared To What Dolt CLI Can Do
-            // Most computers have the same issue on really large repos, so...
-            // We need to curb the memory Dolt CLI Can Use
-            //   To Reduce The Chances Of Android's OOMK From Running
-            long oneMegaByteInBytes = 1000000L;
-            long availableRAMBytes = HelperMethods.getAvailableRamBytes(context);
-            long availableRAMMegabytes = availableRAMBytes / oneMegaByteInBytes;
-            String maxUsableRAMMegabytes = String.valueOf(Math.round(availableRAMMegabytes * percentOfRAMAllowed));
-            env.put("MAX_MEMORY", maxUsableRAMMegabytes);
-            Log.d(tagName, "Max Memory Allowed For CLI: " + HelperMethods.humanReadableByteCountSI(Math.round((long) (availableRAMBytes * percentOfRAMAllowed))));
+            if (suggestMaxMemory) {
+                // TODO: Test `ulimit` to see if it works as the env var does not completely enforce the memory cap
+                // Android Has Low Memory Compared To What Dolt CLI Can Do
+                // Most computers have the same issue on really large repos, so...
+                // We need to curb the memory Dolt CLI Can Use
+                //   To Reduce The Chances Of Android's OOMK From Running
+                long oneMegaByteInBytes = 1000000L;
+                long availableRAMBytes = HelperMethods.getAvailableRamBytes(context);
+                long availableRAMMegabytes = availableRAMBytes / oneMegaByteInBytes;
+                String maxUsableRAMMegabytes = String.valueOf(Math.round(availableRAMMegabytes * percentOfRAMAllowed));
+                env.put("MAX_MEMORY", maxUsableRAMMegabytes);
+                Log.d(tagName, "Max Memory Allowed For CLI: " + HelperMethods.humanReadableByteCountSI(Math.round((long) (availableRAMBytes * percentOfRAMAllowed))));
+            }
 
             // Set Current Working Directory
             File home;

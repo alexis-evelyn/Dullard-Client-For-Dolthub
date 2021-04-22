@@ -124,6 +124,10 @@
     <string name="root_confirmation_long_warning">Enabling root access allows debugging the Dolt CLI by not allowing Android\'s Out Of Memory Killer to get in the way.\n\nHowever, you should be warned, enabling root access can cause potentially destructive problems such as freezing your device, allowing any potential <b><u>arbitrary code execution</u></b> to escalate to higher privileges than what an admin app can do (including turning your device into an <b><u>expensive brick</u></b>), and any other numerous problems that come with granting higher than admin privileges!!!\n\nOnly enable root access <b><u>if you know what you are doing</u></b> and <b><u>you accept the potential consequences</u></b> that will result due to this root access!!! <b><u>Otherwise, deny access and consider testing on a throwaway device instead!!!</u></b></string>
     <!-- End Root Confirmation -->
 
+    <!-- Manage Storage -->
+    <string name="manage_storage">Manage Storage</string>
+    <!-- End Manage Storage -->
+
     <!-- Other -->
     <string name="blank" />
     <string name="share_repo_via">Share Dolthub Repo via</string>

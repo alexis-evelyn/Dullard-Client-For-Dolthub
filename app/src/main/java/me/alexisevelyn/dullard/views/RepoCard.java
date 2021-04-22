@@ -74,8 +74,8 @@ public class RepoCard extends MaterialCardView {
         CharSequence size = view_set_keys.getString(R.styleable.repo_card_size_long);
         boolean placeholderCard = view_set_keys.getBoolean(R.styleable.repo_card_placeholder_card, false);
 
-        Log.e(tagName, "OWNER TEXT: " + owner_text);
-        Log.e(tagName, "DESC TEXT: " + description_text);
+        Log.d(tagName, "OWNER TEXT: " + owner_text);
+        Log.d(tagName, "DESC TEXT: " + description_text);
 
         if (owner_text != null)
             this.setOwner(owner_text.toString());

@@ -19,6 +19,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="advanced_category"
+        app:title="@string/advanced_preferences_category">
+
+        <SwitchPreference
+            app:key="root_preferences"
+            app:summary="@string/root_desc"
+            app:title="@string/root">
+
+        </SwitchPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="other_category"
         app:title="@string/other_preferences_category">
 

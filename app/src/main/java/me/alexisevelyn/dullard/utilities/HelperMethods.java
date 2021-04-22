@@ -1,6 +1,7 @@
 package me.alexisevelyn.dullard.utilities;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,7 +60,7 @@ public class HelperMethods {
 
     public static void writeTextFile(File file, String string) throws IOException {
         if (!file.exists()) {
-            Log.e(tagName, "Creating New File: " + file.getAbsolutePath());
+            Log.d(tagName, "Creating New File: " + file.getAbsolutePath());
             file.createNewFile();
         }
 
@@ -217,5 +218,80 @@ public class HelperMethods {
             default:
                 return false;
         }
+    }
+
+    public static long getAppMemoryClassBytes(Context context) {
+        ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+
+        long oneMegaByteInBytes = 1000000L;
+        return activityManager.getMemoryClass() * oneMegaByteInBytes;
+    }
+
+    public static long getLargeAppMemoryClassBytes(Context context) {
+        ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+
+        long oneMegaByteInBytes = 1000000L;
+        return activityManager.getLargeMemoryClass() * oneMegaByteInBytes;
+    }
+
+    public static long getAvailableRamBytes(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+
+        activityManager.getMemoryInfo(memInfo);
+
+        return memInfo.availMem;
+    }
+
+    public static long getTotalRamBytes(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+
+        activityManager.getMemoryInfo(memInfo);
+
+        return memInfo.totalMem;
+    }
+
+    public static boolean isLowMemory(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+
+        activityManager.getMemoryInfo(memInfo);
+
+        return memInfo.lowMemory;
+    }
+
+    public static void printRamInfo(Context context) {
+        // For debugging the amount of RAM the app can use (may be used for dynamic hard limits on Dolt CLI later)
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+
+        activityManager.getMemoryInfo(memInfo);
+
+        // https://developer.android.com/reference/android/app/ActivityManager.MemoryInfo#availMem
+        // https://developer.android.com/reference/android/app/ActivityManager.MemoryInfo#lowMemory
+        // https://developer.android.com/reference/android/app/ActivityManager.MemoryInfo#totalMem
+        Log.d(tagName, "Available RAM: " + humanReadableByteCountSI(memInfo.availMem));
+        Log.d(tagName, "Total RAM: " + humanReadableByteCountSI(memInfo.totalMem));
+        Log.d(tagName, "Low Memory: " + memInfo.lowMemory);
+    }
+
+    public static void printMemoryClasses(Context context) {
+        // For debugging the amount of RAM the app can use (may be used for dynamic hard limits on Dolt CLI later)
+        ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+
+        // Refer To `adb shell dumpsys meminfo me.alexisevelyn.dullard` for interesting memory usage stats.
+
+        // This reason for making this small number a long is to force Java
+        // to use longs in the calculation and not truncate the values and then convert for storing.
+        // I remember the shenanigans from previous projects where that truncation happened.
+        long oneMegaByteInBytes = 1000000L;
+        long appMemoryClassBytes = activityManager.getMemoryClass() * oneMegaByteInBytes;
+        long appLargeMemoryClassBytes = activityManager.getLargeMemoryClass() * oneMegaByteInBytes;
+
+        // https://developer.android.com/reference/android/app/ActivityManager.html#getMemoryClass()
+        // https://developer.android.com/reference/android/app/ActivityManager.html#getLargeMemoryClass()
+        Log.d(tagName, "App Memory Class: " + humanReadableByteCountSI(appMemoryClassBytes));
+        Log.d(tagName, "Large App Memory Class: " + humanReadableByteCountSI(appLargeMemoryClassBytes));
     }
 }

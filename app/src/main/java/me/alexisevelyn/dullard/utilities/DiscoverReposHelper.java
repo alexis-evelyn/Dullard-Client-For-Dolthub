@@ -213,7 +213,7 @@ public class DiscoverReposHelper {
         int maxTries = 3;
         if(!hasAddedMoreData && (currentTries < maxTries)) {
             repeatedRanOutOfTriesMessage = 0;
-            Log.e(tagName, "NOT MORE DATA - Current Tries: " + currentTries);
+            Log.d(tagName, "Has not added more data, trying again - Current Tries: " + currentTries);
 
             currentTries += 1;
             retrieveAndPopulateRepos();

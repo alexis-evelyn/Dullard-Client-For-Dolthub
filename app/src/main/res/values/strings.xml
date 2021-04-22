@@ -67,6 +67,7 @@
     <string name="general_preferences_category">General</string>
     <string name="other_preferences_category">Other</string>
     <string name="customization_preferences_category">Customization</string>
+    <string name="advanced_preferences_category">Advanced</string>
     <string name="settings">Settings</string>
 
     <string name="dark_mode">Dark Mode</string>
@@ -75,6 +76,9 @@
 
     <string name="day_night">Day/Night Mode</string>
     <string name="day_night_desc">Allows you to choose to use Dark or Light mode for this app</string>
+
+    <string name="root">Grant Root Access</string>
+    <string name="root_desc">Allow potentially destructive actions to take place in the name of debugging</string>
 
     <string name="feedback">Send Feedback</string>
     <string name="feedback_desc">Report technical issues or suggest new features</string>
@@ -111,6 +115,14 @@
     <string name="permission_delete_repo">Delete Repos</string>
     <string name="permission_delete_repo_desc">delete Dolt repos on behalf of the user</string>
     <!-- End Permissions -->
+
+    <!-- Root Confirmation -->
+    <string name="root_confirmed_allowed">Thanks for confirming your wishes to use root privileges</string>
+    <string name="root_confirmed_denied">Thanks for confirming you do not want to use root privileges</string>
+    <string name="root_confirmation_allow_button">Allow Root</string>
+    <string name="root_confirmation_deny_button">Deny Root</string>
+    <string name="root_confirmation_long_warning">Enabling root access allows debugging the Dolt CLI by not allowing Android\'s Out Of Memory Killer to get in the way.\n\nHowever, you should be warned, enabling root access can cause potentially destructive problems such as freezing your device, allowing any potential <b><u>arbitrary code execution</u></b> to escalate to higher privileges than what an admin app can do (including turning your device into an <b><u>expensive brick</u></b>), and any other numerous problems that come with granting higher than admin privileges!!!\n\nOnly enable root access <b><u>if you know what you are doing</u></b> and <b><u>you accept the potential consequences</u></b> that will result due to this root access!!! <b><u>Otherwise, deny access and consider testing on a throwaway device instead!!!</u></b></string>
+    <!-- End Root Confirmation -->
 
     <!-- Other -->
     <string name="blank" />

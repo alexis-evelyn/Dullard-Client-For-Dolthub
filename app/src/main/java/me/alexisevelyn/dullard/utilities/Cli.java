@@ -17,9 +17,21 @@ public class Cli {
     private final Context context;
     private Process process = null;
     private boolean isSQLServerRunning = false;
+    private double percentOfRAMAllowed = 0.25;
+    private boolean useRoot = false;
 
     public Cli(Context context) {
         this.context = context;
+    }
+
+    // This allows setting the max amount of ram allowed on a per CLI basis.
+    public void setPercentOfRAMAllowed(double percentOfRAMAllowed) {
+        this.percentOfRAMAllowed = percentOfRAMAllowed;
+    }
+
+    // This allows the technical user to use root permission to debug the CLI (or bypass Android's OOMK).
+    public void setUseRoot(boolean useRoot) {
+        this.useRoot = useRoot;
     }
 
     private String executeDolt(String... arguments) {
@@ -45,6 +57,19 @@ public class Cli {
             Map<String, String> env = ps.environment();
             env.clear();
             env.put("HOME", homeDir);
+
+
+            // TODO: Test `ulimit` to see if it works as the env var does not completely enforce the memory cap
+            // Android Has Low Memory Compared To What Dolt CLI Can Do
+            // Most computers have the same issue on really large repos, so...
+            // We need to curb the memory Dolt CLI Can Use
+            //   To Reduce The Chances Of Android's OOMK From Running
+            long oneMegaByteInBytes = 1000000L;
+            long availableRAMBytes = HelperMethods.getAvailableRamBytes(context);
+            long availableRAMMegabytes = availableRAMBytes / oneMegaByteInBytes;
+            String maxUsableRAMMegabytes = String.valueOf(Math.round(availableRAMMegabytes * percentOfRAMAllowed));
+            env.put("MAX_MEMORY", maxUsableRAMMegabytes);
+            Log.d(tagName, "Max Memory Allowed For CLI: " + HelperMethods.humanReadableByteCountSI(Math.round((long) (availableRAMBytes * percentOfRAMAllowed))));
 
             // Set Current Working Directory
             File home;

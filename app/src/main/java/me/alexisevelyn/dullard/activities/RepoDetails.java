@@ -31,6 +31,9 @@ public class RepoDetails extends AppCompatActivity {
         HelperMethods.loadDayNightPreferences(this);
         setContentView(R.layout.activity_repo_details);
 
+        HelperMethods.printMemoryClasses(this);
+        HelperMethods.printRamInfo(this);
+
         // Initialize Default Fragment
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

@@ -24,9 +24,21 @@ import java.util.concurrent.atomic.AtomicReference;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.syntax.Prism4jThemeDarkula;
+import io.noties.markwon.syntax.Prism4jThemeDefault;
+import io.noties.markwon.syntax.SyntaxHighlightPlugin;
+import io.noties.prism4j.Prism4j;
+import io.noties.prism4j.annotations.PrismBundle;
 import me.alexisevelyn.dullard.R;
 
+// TODO: Determine why TextViews are "Null" When In Light Mode. Probably has something to do with an outdated context due to reload of theme
+// TODO: Add Switching Between Syntax Highlighting Themes To Match App Theme and Fix Syntax Highlight Theme To Actually Look Good With This App's Themes
+
 // This has no purpose other than to make the Activity class nicer to read
+@PrismBundle(
+        includeAll = true,
+        grammarLocatorClassName = ".DefaultGrammarLocator"
+)
 public class RepoDetailsHelper {
     private static final String tagName = "DullardRepoDetailsHelper";
 
@@ -35,10 +47,14 @@ public class RepoDetailsHelper {
     private JSONObject repoDescription;
     private JSONArray repoFiles;
     private final AtomicReference<Cli> sqlServerCli = new AtomicReference<>();
-    private Markwon markwon;
     private final SwipeRefreshLayout refreshLayout;
 
-    private final AppCompatActivity context;
+    // Markdown Rendering
+    private Markwon markwon;
+    private final Prism4jThemeDarkula syntaxHighlightTheme = Prism4jThemeDarkula.create();
+    private final Prism4j prism4j = new Prism4j(new DefaultGrammarLocator());
+
+    private AppCompatActivity context;
 
     public RepoDetailsHelper(AppCompatActivity context) {
         this.context = context;
@@ -90,13 +106,17 @@ public class RepoDetailsHelper {
 
                 builder.linkColor(context.getColor(resolvedColor.resourceId));
             }
-        }).build();
+        }).usePlugin(SyntaxHighlightPlugin.create(prism4j, syntaxHighlightTheme)).build();
 
         loadAndPopulateRepoData();
 
         // To allow user to refresh repo details
         this.refreshLayout = context.findViewById(R.id.refresh_repo_details);
         refreshLayout.setOnRefreshListener(this::loadAndPopulateRepoData);
+    }
+
+    public void setContext(AppCompatActivity context) {
+        this.context = context;
     }
 
     public void shareRepo() {

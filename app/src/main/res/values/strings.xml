@@ -97,6 +97,9 @@
 
     <string name="markwon">Markwon</string>
     <string name="markwon_desc">Apache 2.0 - Android Markdown Parsing Library</string>
+
+    <string name="markwon_syntax_highlighting">Markwon Syntax Highlighting</string>
+    <string name="markwon_syntax_highlighting_desc">Apache 2.0 - Syntax Highlighting For Markwon</string>
     <!-- End Setting Screens -->
 
     <!-- Permissions -->

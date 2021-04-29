@@ -23,6 +23,11 @@
             app:title="@string/markwon">
             <intent android:action="android.intent.action.VIEW" android:data="https://github.com/noties/Markwon/blob/master/LICENSE" />
         </Preference>
+
+        <Preference app:summary="@string/markwon_syntax_highlighting_desc"
+            app:title="@string/markwon_syntax_highlighting">
+            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/noties/Markwon/blob/master/LICENSE" />
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>
